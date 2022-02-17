@@ -1,24 +1,14 @@
 #include "table_generator.hpp"
-#include <chrono>
-template<typename Functor>
-double execution_time(Functor functor);
+#include "../utils/include/utils.hpp"
 
 int main() {
-  double ns = execution_time(
+  double ns = Utils::execution_time_ns(
 	  []() {
-		auto tbl = new TableGenerator{10};
+		auto tbl = new TableGenerator{11};
 		tbl->generate_table();
 		tbl->print_table();
+		return tbl->result();
 	  }
   );
   std::cout << "execution time: " << ns << " ns" << std::endl;
-}
-
-template<typename Functor>
-double execution_time(Functor functor) {
-  auto start = std::chrono::steady_clock::now();
-  auto end = std::chrono::steady_clock::now();
-  functor();
-  auto diff = end - start;
-  return std::chrono::duration<double, std::nano>(diff).count();
 }

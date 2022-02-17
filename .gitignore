@@ -30,5 +30,4 @@ cmake-build-debug
 
 # Executables
 *.exe
-*.out
 *.app

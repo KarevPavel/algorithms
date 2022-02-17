@@ -1,3 +1,10 @@
+cmake_minimum_required(VERSION 3.17)
+project(algorithms)
 
 add_subdirectory(lucky-ticket)
 add_subdirectory(harry-potter)
+add_subdirectory(eratosthenes)
+add_subdirectory(number)
+add_subdirectory(fibonacci)
+add_subdirectory(pow)
+add_subdirectory(utils)

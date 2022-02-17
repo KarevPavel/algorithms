@@ -133,18 +133,16 @@ TEST_F(TableGeneratorTest, _08) {
   long long in_arg = first_line_content(test_input_files[8]);
   auto tbl = TableGenerator{(int)in_arg};
   tbl.generate_table();
-  //tbl.print_table();
+  tbl.print_table();
   EXPECT_EQ(tbl.result() - first_line_content(test_results_files[8]), 0);
-  //EXPECT_EQ(tbl.result(), first_line_content(test_results_files[8]));
 }
 
 TEST_F(TableGeneratorTest, _09) {
   long long in_arg = first_line_content(test_input_files[9]);
   auto tbl = TableGenerator{(int)in_arg};
   tbl.generate_table();
-  //tbl.print_table();
+  tbl.print_table();
   EXPECT_EQ(tbl.result() - first_line_content(test_results_files[9]), 0);
-  //EXPECT_EQ(tbl.result(), first_line_content(test_results_files[9]));
 }
 
 int main(int argc, char **argv) {
