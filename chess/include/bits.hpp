@@ -4,10 +4,13 @@
 
 #pragma once
 
+#include "iostream"
+
 namespace Bits {
 using ul = unsigned long;
 long popcnt(ul);
 long popcnt2(ul);
+long popcnt3(ul);
 }
 
 long Bits::popcnt(ul mask) {
@@ -27,4 +30,13 @@ long Bits::popcnt2(ul mask) {
     mask &= mask - 1;
   }
   return count;
+}
+
+long Bits::popcnt3(ul mask) {
+
+
+}
+
+void generate_cache() {
+
 }

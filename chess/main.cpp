@@ -2,6 +2,7 @@
 #include "knight.hpp"
 #include "king.hpp"
 #include "bits.hpp"
+#include "rook.hpp"
 
 int main() {
   std::cout << King::get_moves(63) << std::endl;
@@ -11,6 +12,8 @@ int main() {
   std::cout << Knight::get_moves(63) << std::endl;
   std::cout << Bits::popcnt(Knight::get_moves(63)) << std::endl;
   std::cout << Bits::popcnt2(Knight::get_moves(63)) << std::endl;
+
+  std::cout << Rook::get_moves(63) << std::endl;
 
 
 
