@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.17)
 project(algorithms)
 
 add_subdirectory(lucky-ticket)
+add_subdirectory(lists)
 add_subdirectory(harry-potter)
 add_subdirectory(eratosthenes)
 add_subdirectory(number)
