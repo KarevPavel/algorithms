@@ -15,6 +15,8 @@ namespace Utils {
 template<typename R, typename ...Args>
 void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...), Args &&...args);
 
+void print_array(int array[], size_t lenght, std::ostream& ostream);
+
 template<typename T>
 std::string to_string(T t1);
 
@@ -30,14 +32,23 @@ void multiple_inserts_exec_time(const std::string &test_name, Container containe
 template<typename Container>
 void loop(Container container, long loop_count);
 
-/*
-template<typename TF, typename TDuration, class... TArgs>
-std::result_of_t<TF &&(TArgs &&...)> run_with_timeout(TF &f, TDuration timeout, TArgs &&... args);
-*/
-
 template<typename TF, typename TDuration, class... TArgs>
 void run_with_timeout(TF &f, TDuration timeout, TArgs &&... args);
+
+void array_swap(int array[], int a, int b);
+
+void shift_array(int array[], int a, int b);
+
+bool check_array_sort(const int array[], size_t lenght);
+
+int * random_array(int element_count);
+
+template<typename SortImpl>
+inline void test_sorting(const std::string& test_name, int element_count, SortImpl * sort);
+
 }
+
+
 
 template<typename T>
 inline std::string Utils::to_string(T t1) {
@@ -112,4 +123,50 @@ inline void Utils::run_with_timeout(TF &f, TDuration timeout, TArgs &&... args) 
 	thr.detach();
 	throw std::runtime_error("Timeout");
   }
+}
+
+inline void Utils::array_swap(int array[], int a, int b) {
+  int x = array[a];
+  array[a] = array[b];
+  array[b] = x;
+}
+
+inline void Utils::shift_array(int array[], int a, int b) {
+	for (int i = b; i > a; i--) {
+	  array[i] = array[i - 1];
+	}
+}
+
+inline void Utils::print_array(int array[], size_t lenght, std::ostream& ostream) {
+  ostream << "Array [ ";
+  for (int i = 0; i < lenght; ++i)
+	ostream << array[i] << ", ";
+  ostream << "]" << std::endl;
+}
+
+inline bool Utils::check_array_sort(const int array[], size_t lenght) {
+  for (int i = 1; i < lenght; ++i)
+    if (array[i] < array[i - 1])
+	  return false;
+  return true;
+}
+
+int * Utils::random_array(int element_count) {
+  auto array = new int[element_count];
+  for (int i = 0; i < element_count; i++)
+	array[i] = rand() % (element_count + 1);
+  return array;
+}
+
+template<typename SortImpl>
+inline void Utils::test_sorting(const std::string& test_name, int element_count, SortImpl * sort) {
+  std::cout << "--------" << test_name << "----------" << std::endl;
+  auto arr = random_array(element_count);
+  auto start = std::chrono::steady_clock::now();
+  sort->sort(arr, element_count);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
+  std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR") << std::endl;
+  std::cout << "-----------------------------------" << std::endl << std::endl;
 }
