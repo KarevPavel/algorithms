@@ -14,6 +14,12 @@ class ShiftedInsertionSort: public ArraySort {
 };
 
 void ShiftedInsertionSort::sort(int array[], size_t length) {
+
+  for (int i = 0; i < length; i++)
+	for (int j = i; j > 0 && array[j] < array[j - 1]; j--)
+	  Utils::array_swap(array, j, j - 1);
+
+
   for (int i = 0; i < length; i++) {
     bool wanna_change = false;
 	for (int j = i; j > 0; j--) {
@@ -24,9 +30,7 @@ void ShiftedInsertionSort::sort(int array[], size_t length) {
 	  }
 	  if (wanna_change && array[j] < array[j - 1]) {
 		int right_element = array[right_element_index];
-		Utils::print_array(array, length, std::cout);
 		Utils::shift_array(array, j - 1, right_element_index);
-		Utils::print_array(array, length, std::cout);
 		array[j - 1] = right_element;
 		Utils::print_array(array, length, std::cout);
 		wanna_change = false;
