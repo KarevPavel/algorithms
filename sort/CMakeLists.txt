@@ -1,17 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
-project(sort)
+project(sort LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CUDA_STANDARD 14)
-set(CMAKE_CUDA_STANDARD_REQUIRED ON)
-set(CMAKE_CUDA_COMPILER /opt/cuda/bin/nvcc)
 
-include(CheckLanguage)
-check_language(CUDA)
-enable_language(CUDA)
+find_package(OpenCL REQUIRED)
 
-
-include_directories(/opt/cuda/include)
 add_executable(${PROJECT_NAME} main.cpp)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_auto_type)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC utils)
+target_link_libraries(${PROJECT_NAME} PUBLIC utils OpenCL::OpenCL)
 target_include_directories(${PROJECT_NAME} PRIVATE include)

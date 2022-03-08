@@ -46,6 +46,8 @@ int * random_array(int element_count);
 template<typename SortImpl>
 inline void test_sorting(const std::string& test_name, int element_count, SortImpl * sort);
 
+template<typename SortImpl>
+inline void test_sorting_auto(const std::string& test_name, SortImpl * sort);
 }
 
 
@@ -168,5 +170,24 @@ inline void Utils::test_sorting(const std::string& test_name, int element_count,
   std::chrono::duration<double, std::milli> fp_ms = end - start;
   std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
   std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR") << std::endl;
+  std::cout << "-----------------------------------" << std::endl << std::endl;
+}
+
+template<typename SortImpl>
+inline void Utils::test_sorting_auto(const std::string& test_name, SortImpl * sort) {
+  std::cout << "--------" << test_name << "----------" << std::endl;
+  for (int pow = 2; pow < 7; pow++) {
+	int element_count = std::pow(10, pow);
+	auto arr = random_array(element_count);
+	auto start = std::chrono::steady_clock::now();
+	sort->sort(arr, element_count);
+	auto end = std::chrono::steady_clock::now();
+	std::chrono::duration<double, std::milli> fp_ms = end - start;
+	if (pow == 2)
+	  std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR")
+				<< std::endl;
+
+	std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
+  }
   std::cout << "-----------------------------------" << std::endl << std::endl;
 }
