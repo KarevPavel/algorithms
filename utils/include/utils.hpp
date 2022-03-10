@@ -48,9 +48,9 @@ inline void test_sorting(const std::string& test_name, int element_count, SortIm
 
 template<typename SortImpl>
 inline void test_sorting_auto(const std::string& test_name, SortImpl * sort);
+
+void print_array(int array[], int start_idx, int end_idx, std::ostream& ostream);
 }
-
-
 
 template<typename T>
 inline std::string Utils::to_string(T t1) {
@@ -137,6 +137,13 @@ inline void Utils::shift_array(int array[], int a, int b) {
 	for (int i = b; i > a; i--) {
 	  array[i] = array[i - 1];
 	}
+}
+
+inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ostream& ostream) {
+  ostream << "Array [ ";
+  for (int i = start_idx; i <= end_idx; ++i)
+	ostream << array[i] << ", ";
+  ostream << "]" << std::endl;
 }
 
 inline void Utils::print_array(int array[], size_t lenght, std::ostream& ostream) {
