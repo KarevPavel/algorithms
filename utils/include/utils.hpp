@@ -9,6 +9,8 @@
 #include <iostream>
 #include <cmath>
 #include <future>
+#include <fstream>
+#include <random>
 
 namespace Utils {
 
@@ -44,12 +46,19 @@ bool check_array_sort(const int array[], size_t lenght);
 int * random_array(int element_count);
 
 template<typename SortImpl>
-inline void test_sorting(const std::string& test_name, int element_count, SortImpl * sort);
+void test_sorting(const std::string& test_name, int element_count, SortImpl * sort);
 
 template<typename SortImpl>
-inline void test_sorting_auto(const std::string& test_name, SortImpl * sort);
+std::string table_sorting(int element_count, SortImpl * sort);
+
+template<typename SortImpl>
+void test_sorting_auto(const std::string& test_name, SortImpl * sort);
 
 void print_array(int array[], int start_idx, int end_idx, std::ostream& ostream);
+
+void generate_file(const std::string & path, unsigned long N);
+
+int random_int(int a, int b);
 }
 
 template<typename T>
@@ -163,7 +172,7 @@ inline bool Utils::check_array_sort(const int array[], size_t lenght) {
 int * Utils::random_array(int element_count) {
   auto array = new int[element_count];
   for (int i = 0; i < element_count; i++)
-	array[i] = rand() % (element_count + 1);
+	array[i] = random_int(0, element_count);
   return array;
 }
 
@@ -178,6 +187,16 @@ inline void Utils::test_sorting(const std::string& test_name, int element_count,
   std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
   std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR") << std::endl;
   std::cout << "-----------------------------------" << std::endl << std::endl;
+}
+
+template<typename SortImpl>
+inline std::string Utils::table_sorting(int element_count, SortImpl * sort) {
+  auto arr = random_array(element_count);
+  auto start = std::chrono::steady_clock::now();
+  sort->sort(arr, element_count);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return Utils::check_array_sort(arr, element_count) ? std::to_string(fp_ms.count()) : "ERROR";
 }
 
 template<typename SortImpl>
@@ -197,4 +216,21 @@ inline void Utils::test_sorting_auto(const std::string& test_name, SortImpl * so
 	std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
   }
   std::cout << "-----------------------------------" << std::endl << std::endl;
+}
+
+inline void Utils::generate_file(const std::string & path, unsigned long N) {
+  std::ofstream ofstream;
+  ofstream.open(path);
+  for (int i = 0; i < N; i++) {
+	ofstream << random_int(0, 65535);
+	if (N - 1 != i)
+	  ofstream << std::endl;
+  }
+}
+
+inline int Utils::random_int(int a, int b) {
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<int> dist(a, b);
+  return dist(mt);
 }

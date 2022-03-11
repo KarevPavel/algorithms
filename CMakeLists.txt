@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
 project(algorithms)
 
+add_subdirectory(lib/tabulate)
+
 add_subdirectory(lucky-ticket)
 add_subdirectory(lists)
 add_subdirectory(harry-potter)
@@ -11,3 +13,4 @@ add_subdirectory(pow)
 add_subdirectory(utils)
 add_subdirectory(chess)
 add_subdirectory(sort)
+add_subdirectory(file)

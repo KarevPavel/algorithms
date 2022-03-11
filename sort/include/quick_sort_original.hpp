@@ -31,8 +31,10 @@ void OriginalQuickSort::split(int array[], int start_idx, int end_idx) {
 	  break;
 	Utils::array_swap(array, left, right);
   }
+  //TODO: Не уверен, что это действительно надо делать
   if (left == right)
 	left--;
+
   if (left - start_idx > 0)
 	split(array, start_idx, left);
   if (end_idx - right > 0)
