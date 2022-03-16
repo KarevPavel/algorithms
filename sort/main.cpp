@@ -90,7 +90,7 @@ int main() {
 
   std::cout << "## O(n * log n)" << std::endl;
   auto logariphm_table = generate_table(logariphm, tests);
-  std::cout << exporter.dump(logariphm_table) << std::endl;*/
+  std::cout << exporter.dump(logariphm_table) << std::endl;
 
   std::cout << "## O(N)" << std::endl;
   auto linear_table = generate_table(linear, tests);
