@@ -10,12 +10,14 @@
 
 class HeapSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~HeapSort() override = default;
+
+  void sort(long *array, size_t length) override;
  private:
-  void max_to_root(int array[], int root, size_t size_t);
+  void max_to_root(long array[], int root, size_t size_t);
 };
 
-void HeapSort::sort(int array[], size_t length) {
+void HeapSort::sort(long *array, size_t length) {
   for (int root = length / 2 - 1; root >= 0; root--)
 	max_to_root(array, root, length);
 
@@ -26,7 +28,7 @@ void HeapSort::sort(int array[], size_t length) {
 
 }
 
-void HeapSort::max_to_root(int array[], int root, size_t length) {
+void HeapSort::max_to_root(long array[], int root, size_t length) {
   int left = 2 * root + 1;
   int rigth = 2 * root + 2;
   int x = root;

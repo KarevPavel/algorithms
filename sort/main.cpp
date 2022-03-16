@@ -17,12 +17,11 @@
 #include <merge_sort.hpp>
 #include <map>
 #include <list>
+#include <bucket_sort.hpp>
+#include <counting_sort.hpp>
+#include <radix_sort.hpp>
 
-bool le_10000(size_t arg) {
-  return arg <= 10000;
-}
-
-template <size_t max>
+template<size_t max>
 bool le(size_t arg) {
   return arg <= max;
 }
@@ -31,28 +30,10 @@ bool no_check(size_t arg) {
   return true;
 }
 
-int main() {
+tabulate::Table generate_table(const std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>>& sort_list_with_clause,
+					const std::map<std::string, size_t>& tests) {
+
   tabulate::Table sort_results;
-
-  std::map<std::string, size_t> tests;
-  tests["100"] = 100;
-  tests["1000"] = 1000;
-  tests["10000"] = 10000;
-  tests["100000"] = 100000;
-  tests["1000000"] = 1000000;
-  tests["10000000"] = 10000000;
-
-  std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> sort_list_with_clause;
-  sort_list_with_clause["BubbleSort"] = {&le<10000>, new BubbleSort()};
-  sort_list_with_clause["Optimized - BubbleSort"] = {&le_10000, new OptimizedBubbleSort()};
-  sort_list_with_clause["InsertionSort"] = {&le_10000, new InsertionSort()};
-  sort_list_with_clause["Original - ShellSort"] = {&le_10000, new ShellSort()};
-  sort_list_with_clause["SelectionSort"] = {&le_10000, new SelectionSort()};
-  sort_list_with_clause["HeapSort"] = {&no_check, new HeapSort()};
-  sort_list_with_clause["Original - QuickSort"] = {&no_check, new OriginalQuickSort()};
-  sort_list_with_clause["Optimized - QuickSort"] = {&no_check, new OptimizedQuickSort()};
-  sort_list_with_clause["MergeSort"] = {&no_check, new MergeSort()};
-
   tabulate::Table::Row_t header_rows;
   header_rows.push_back("elements");
   for (auto const &imap: sort_list_with_clause)
@@ -69,7 +50,50 @@ int main() {
 		result_rows.push_back(" - ");
 	sort_results.add_row(result_rows);
   }
-  tabulate::MarkdownExporter exporter;
-  auto markdown = exporter.dump(sort_results);
-  std::cout << markdown << std::endl;
+  return sort_results;
 }
+
+int main() {
+
+  std::map<std::string, size_t> tests;
+  tests["100"] = 100;
+  tests["1000"] = 1000;
+  tests["10000"] = 10000;
+  tests["100000"] = 100000;
+  tests["1000000"] = 1000000;
+  tests["10000000"] = 10000000;
+
+  std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> exponent;
+  exponent["BubbleSort"] = {&le<100000>, new BubbleSort()};
+  exponent["Optimized - BubbleSort"] = {&le<100000>, new OptimizedBubbleSort()};
+  exponent["InsertionSort"] = {&le<100000>, new InsertionSort()};
+  exponent["Original - ShellSort"] = {&le<1000000>, new ShellSort()};
+  exponent["SelectionSort"] = {&le<100000>, new SelectionSort()};
+
+  std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> logariphm;
+  logariphm["HeapSort"] = {&no_check, new HeapSort()};
+  logariphm["Original - QuickSort"] = {&no_check, new OriginalQuickSort()};
+  logariphm["Optimized - QuickSort"] = {&no_check, new OptimizedQuickSort()};
+  logariphm["MergeSort"] = {&no_check, new MergeSort()};
+
+
+  std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> linear;
+  linear["BucketSort"] = {&no_check, new BucketSort()};
+  linear["CountingSort"] = {&no_check, new CountingSort()};
+  linear["RadixSort"] = {&no_check, new RadixSort()};
+
+  tabulate::MarkdownExporter exporter;
+
+  std::cout << "## O(n ^ 2)" << std::endl;
+  auto exponent_table = generate_table(exponent, tests);
+  std::cout << exporter.dump(exponent_table) << std::endl;
+
+  std::cout << "## O(n * log n)" << std::endl;
+  auto logariphm_table = generate_table(logariphm, tests);
+  std::cout << exporter.dump(logariphm_table) << std::endl;*/
+
+  std::cout << "## O(N)" << std::endl;
+  auto linear_table = generate_table(linear, tests);
+  std::cout << exporter.dump(linear_table) << std::endl;
+}
+

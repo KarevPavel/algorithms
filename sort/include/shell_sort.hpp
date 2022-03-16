@@ -11,12 +11,13 @@
 
 class ShellSort: public InsertionSort {
  public:
-  void sort(int array[], size_t length) override;
+  ~ShellSort() override = default;
+  void sort(long *array, size_t length) override;
  private:
-  void sort_pieces(int array[], size_t length);
+  void sort_pieces(long array[], size_t length);
 };
 
-void ShellSort::sort(int array[], size_t length) {
+void ShellSort::sort(long *array, size_t length) {
   sort_pieces(array, length);
   InsertionSort::sort(array, length);
 }
@@ -27,7 +28,7 @@ void ShellSort::sort(int array[], size_t length) {
  * @param array
  * @param length
  */
-void ShellSort::sort_pieces(int array[], size_t length) {
+void ShellSort::sort_pieces(long array[], size_t length) {
   int gaps = length / 2;
   for (int gap = 2; gap <= gaps; gap *= 2)
 	for (int offset = 0; offset < gap; offset++)

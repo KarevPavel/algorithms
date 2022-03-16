@@ -10,10 +10,11 @@
 
 class OptimizedBubbleSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~OptimizedBubbleSort() override = default;
+  void sort(long *array, size_t length) override;
 };
 
-void OptimizedBubbleSort::sort(int array[], size_t length) {
+void OptimizedBubbleSort::sort(long *array, size_t length) {
   for (int i = 0; i < length; i++) {
     bool is_changed = false;
 	for (int j = 0; j < length - i - 1; j++)

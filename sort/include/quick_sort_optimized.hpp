@@ -6,16 +6,17 @@
 
 class OptimizedQuickSort: public OriginalQuickSort {
  public:
-  void sort(int array[], size_t length) override;
+  ~OptimizedQuickSort() override = default;
+  void sort(long *array, size_t length) override;
  private:
-  void split(int array[], int start_idx, int last_idx);
+  void split(long array[], int start_idx, int last_idx);
 };
 
-void OptimizedQuickSort::sort(int array[], size_t length) {
+void OptimizedQuickSort::sort(long *array, size_t length) {
   split(array, 0, length - 1);
 }
 
-void OptimizedQuickSort::split(int array[], int start_idx, int last_idx) {
+void OptimizedQuickSort::split(long array[], int start_idx, int last_idx) {
     int a = start_idx - 1;
     int pivot = array[last_idx];
     for (int m = start_idx; m <= last_idx; m++)

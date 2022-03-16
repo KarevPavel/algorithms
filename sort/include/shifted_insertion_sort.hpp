@@ -8,12 +8,14 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
+/*
 class ShiftedInsertionSort: public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~ShiftedInsertionSort() override = default;
+  void sort(long *array, size_t length) override;
 };
 
-void ShiftedInsertionSort::sort(int array[], size_t length) {
+void ShiftedInsertionSort::sort(long *array, size_t length) {
 
   for (int i = 0; i < length; i++)
 	for (int j = i; j > 0 && array[j] < array[j - 1]; j--)
@@ -38,4 +40,5 @@ void ShiftedInsertionSort::sort(int array[], size_t length) {
 	}
   }
 }
+*/
 

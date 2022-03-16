@@ -9,16 +9,17 @@
 
 class OriginalQuickSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~OriginalQuickSort() override = default;
+  void sort(long *array, size_t length) override;
  private:
-  void split(int array[], int start_idx, int end_idx);
+  void split(long array[], int start_idx, int end_idx);
 };
 
-void OriginalQuickSort::sort(int array[], size_t length) {
+void OriginalQuickSort::sort(long *array, size_t length) {
   split(array, 0, length - 1);
 }
 
-void OriginalQuickSort::split(int array[], int start_idx, int end_idx) {
+void OriginalQuickSort::split(long array[], int start_idx, int end_idx) {
   int left = start_idx;
   int right = end_idx;
   int pivot = array[right];

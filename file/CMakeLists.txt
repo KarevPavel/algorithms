@@ -3,6 +3,7 @@ project(file)
 set(CMAKE_CXX_STANDARD 14)
 
 set(FILE_PATH_CONFIG ${CMAKE_CURRENT_SOURCE_DIR}/generated_numbers.txt)
+set(SORT_RESULT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tmp/)
 add_executable(${PROJECT_NAME} main.cpp)
 configure_file(include/file_path_config.hpp.in ${CMAKE_BINARY_DIR}/generated/file_path_config.hpp)
 include_directories(${CMAKE_BINARY_DIR}/generated/)

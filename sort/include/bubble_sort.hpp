@@ -10,10 +10,11 @@
 
 class BubbleSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~BubbleSort() override = default;
+  void sort(long *array, size_t length) override;
 };
 
-void BubbleSort::sort(int array[], size_t length) {
+void BubbleSort::sort(long *array, size_t length) {
   for (int i = 0; i < length; i++)
 	for (int j = 0; j < length - i - 1; j++)
 	  if (array[j] > array[j + 1])

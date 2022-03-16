@@ -5,8 +5,11 @@
 #pragma once
 
 #include <cstring>
+#include <string>
+#include <fstream>
 
 class ArraySort {
  public:
-  virtual void sort(int array[], size_t length) = 0;
+  virtual ~ArraySort() = default;
+  virtual void sort(long *array, size_t length) = 0;
 };

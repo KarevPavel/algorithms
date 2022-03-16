@@ -9,23 +9,28 @@
 
 class BucketSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
-
- private:
-  int ** bucket;
+  ~BucketSort() override = default;
+  void sort(long *array, size_t length) override;
 };
 
-void BucketSort::sort(int array[], size_t length) {
-  int max = 1.5 * length;
-  bucket = new int * [max];
+void BucketSort::sort(long *array, size_t length) {
+  auto bucket = new std::vector<int>[length]();
+
+  int max = Utils::find_max(array, length);
+
   for (int i = 0; i < length; i++) {
-    int bucket_index = (array[i] * length) / (max + 1);
-    if (bucket[bucket_index] == nullptr)
-	  bucket[bucket_index] = &array[i];
-    else {
-	  bucket[bucket_index] =
-    }
+	int bucket_index = std::round((float)(array[i] * length) / ((float)max + 1));
+	bucket[bucket_index].push_back(array[i]);
+	if (bucket[bucket_index].size() > 1)
+	  std::sort(bucket[bucket_index].begin(), bucket[bucket_index].end());
   }
 
-  delete bucket;
+  int index = 0;
+  for (int i = 0; i < length; i++) {
+	while (!bucket[i].empty()) {
+	  array[index++] = *(bucket[i].begin());
+	  bucket[i].erase(bucket[i].begin());
+	}
+  }
+  delete [] bucket;
 }

@@ -17,7 +17,7 @@ namespace Utils {
 template<typename R, typename ...Args>
 void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...), Args &&...args);
 
-void print_array(int array[], size_t lenght, std::ostream& ostream);
+void print_array(int array[], size_t lenght, std::ostream &ostream);
 
 template<typename T>
 std::string to_string(T t1);
@@ -37,28 +37,32 @@ void loop(Container container, long loop_count);
 template<typename TF, typename TDuration, class... TArgs>
 void run_with_timeout(TF &f, TDuration timeout, TArgs &&... args);
 
-void array_swap(int array[], int a, int b);
+template <typename T>
+void array_swap(T array[], int a, int b);
 
 void shift_array(int array[], int a, int b);
 
-bool check_array_sort(const int array[], size_t lenght);
+bool check_array_sort(const long array[], size_t lenght);
 
-int * random_array(int element_count);
-
-template<typename SortImpl>
-void test_sorting(const std::string& test_name, int element_count, SortImpl * sort);
+long *random_array(int element_count);
 
 template<typename SortImpl>
-std::string table_sorting(int element_count, SortImpl * sort);
+void test_sorting(const std::string &test_name, int element_count, SortImpl *sort);
 
 template<typename SortImpl>
-void test_sorting_auto(const std::string& test_name, SortImpl * sort);
+std::string table_sorting(int element_count, SortImpl *sort);
 
-void print_array(int array[], int start_idx, int end_idx, std::ostream& ostream);
+template<typename SortImpl>
+void test_sorting_auto(const std::string &test_name, SortImpl *sort);
 
-void generate_file(const std::string & path, unsigned long N);
+void print_array(int array[], int start_idx, int end_idx, std::ostream &ostream);
+
+void generate_file(const std::string &path, char separator, unsigned long N);
 
 int random_int(int a, int b);
+
+template<typename T>
+T find_max(T *array, int length);
 }
 
 template<typename T>
@@ -136,48 +140,52 @@ inline void Utils::run_with_timeout(TF &f, TDuration timeout, TArgs &&... args) 
   }
 }
 
-inline void Utils::array_swap(int array[], int a, int b) {
+template <typename T>
+inline void Utils::array_swap(T array[], int a, int b) {
   int x = array[a];
   array[a] = array[b];
   array[b] = x;
 }
 
 inline void Utils::shift_array(int array[], int a, int b) {
-	for (int i = b; i > a; i--) {
-	  array[i] = array[i - 1];
-	}
+  for (int i = b; i > a; i--) {
+	array[i] = array[i - 1];
+  }
 }
 
-inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ostream& ostream) {
+inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ostream &ostream) {
   ostream << "Array [ ";
   for (int i = start_idx; i <= end_idx; ++i)
 	ostream << array[i] << ", ";
   ostream << "]" << std::endl;
 }
 
-inline void Utils::print_array(int array[], size_t lenght, std::ostream& ostream) {
+inline void Utils::print_array(int array[], size_t lenght, std::ostream &ostream) {
   ostream << "Array [ ";
   for (int i = 0; i < lenght; ++i)
 	ostream << array[i] << ", ";
   ostream << "]" << std::endl;
 }
 
-inline bool Utils::check_array_sort(const int array[], size_t lenght) {
+inline bool Utils::check_array_sort(const long array[], size_t lenght) {
   for (int i = 1; i < lenght; ++i)
-    if (array[i] < array[i - 1])
+	if (array[i] < array[i - 1]) {
+	  std::cout << "At indices [" << i << "] and [" << (i - 1) << "] values " << array[i] << " < " << array[i - 1]
+				<< " is true" << std::endl;
 	  return false;
+	}
   return true;
 }
 
-int * Utils::random_array(int element_count) {
-  auto array = new int[element_count];
+long *Utils::random_array(int element_count) {
+  auto array = new long[element_count];
   for (int i = 0; i < element_count; i++)
 	array[i] = random_int(0, element_count);
   return array;
 }
 
 template<typename SortImpl>
-inline void Utils::test_sorting(const std::string& test_name, int element_count, SortImpl * sort) {
+inline void Utils::test_sorting(const std::string &test_name, int element_count, SortImpl *sort) {
   std::cout << "--------" << test_name << "----------" << std::endl;
   auto arr = random_array(element_count);
   auto start = std::chrono::steady_clock::now();
@@ -185,22 +193,24 @@ inline void Utils::test_sorting(const std::string& test_name, int element_count,
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
   std::cout << "| For sorting " << element_count << " elements took: " << fp_ms.count() << " ms" << std::endl;
-  std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR") << std::endl;
+  std::cout << "| Check elements order: " << (Utils::check_array_sort(arr, element_count) ? "OK" : "ERROR")
+			<< std::endl;
   std::cout << "-----------------------------------" << std::endl << std::endl;
 }
 
 template<typename SortImpl>
-inline std::string Utils::table_sorting(int element_count, SortImpl * sort) {
+inline std::string Utils::table_sorting(int element_count, SortImpl *sort) {
   auto arr = random_array(element_count);
   auto start = std::chrono::steady_clock::now();
   sort->sort(arr, element_count);
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
-  return Utils::check_array_sort(arr, element_count) ? std::to_string(fp_ms.count()) : "ERROR";
+  bool isOk = Utils::check_array_sort(arr, element_count);
+  return isOk ? std::to_string(fp_ms.count()) : "ERROR";
 }
 
 template<typename SortImpl>
-inline void Utils::test_sorting_auto(const std::string& test_name, SortImpl * sort) {
+inline void Utils::test_sorting_auto(const std::string &test_name, SortImpl *sort) {
   std::cout << "--------" << test_name << "----------" << std::endl;
   for (int pow = 2; pow < 7; pow++) {
 	int element_count = std::pow(10, pow);
@@ -218,13 +228,11 @@ inline void Utils::test_sorting_auto(const std::string& test_name, SortImpl * so
   std::cout << "-----------------------------------" << std::endl << std::endl;
 }
 
-inline void Utils::generate_file(const std::string & path, unsigned long N) {
+inline void Utils::generate_file(const std::string &path, char separator, unsigned long N) {
   std::ofstream ofstream;
   ofstream.open(path);
   for (int i = 0; i < N; i++) {
-	ofstream << random_int(0, 65535);
-	if (N - 1 != i)
-	  ofstream << std::endl;
+	ofstream << random_int(0, 65535) << separator;
   }
 }
 
@@ -233,4 +241,16 @@ inline int Utils::random_int(int a, int b) {
   std::mt19937 mt(rd());
   std::uniform_int_distribution<int> dist(a, b);
   return dist(mt);
+}
+
+template<typename T>
+inline T Utils::find_max(T *array, int length) {
+  int max = 0;
+  for (int l = 0, r = length; l < r; l++, r--) {
+	if (max < array[l])
+	  max = array[l];
+	if (max < array[r])
+	  max = array[r];
+  }
+  return max;
 }

@@ -3,3 +3,4 @@
 //
 #pragma once
 #define FILE_OUTPUT "@FILE_PATH_CONFIG@"
+#define SORT_RESULT "@SORT_RESULT_DIR@"

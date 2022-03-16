@@ -9,21 +9,23 @@
 
 class MergeSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~MergeSort() override = default;
+  void sort(long *array, size_t length) override;
  private:
-  void mergeSort(int array[], int start_idx, int end_idx);
-  void merge(int array[], int start_idx, int m, int end_idx);
+  void mergeSort(long array[], int start_idx, int end_idx);
+  void merge(long array[], int start_idx, int m, int end_idx);
 };
 
-void MergeSort::sort(int array[], size_t length) {
+void MergeSort::sort(long *array, size_t length) {
   mergeSort(array, 0, length - 1);
 }
 
-void MergeSort::merge(int arr[], int l, int m, int r) {
+void MergeSort::merge(long arr[], int l, int m, int r) {
   int i, j, k;
   int n1 = m - l + 1;
   int n2 = r - m;
-  int L[n1], R[n2];
+  int * L = new int[n1];
+  int * R = new int[n2];
 
   for (i = 0; i < n1; i++)
 	L[i] = arr[l + i];
@@ -46,9 +48,11 @@ void MergeSort::merge(int arr[], int l, int m, int r) {
 
   while (j < n2)
 	arr[k++] = R[j++];
+  delete [] R;
+  delete [] L;
 }
 
-void MergeSort::mergeSort(int arr[], int l, int r) {
+void MergeSort::mergeSort(long arr[], int l, int r) {
   if (l < r) {
 	int m = l + (r - l) / 2;
 	mergeSort(arr, l, m);

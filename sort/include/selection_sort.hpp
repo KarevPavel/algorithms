@@ -10,10 +10,11 @@
 
 class SelectionSort : public ArraySort {
  public:
-  void sort(int array[], size_t length) override;
+  ~SelectionSort() override = default;
+  void sort(long *array, size_t length) override;
 };
 
-void SelectionSort::sort(int array[], size_t length) {
+void SelectionSort::sort(long *array, size_t length) {
   for (int i = length; i > 0; i--) {
 	int max_element_idx = i;
 	for (int j = 0; j < i; j++)
