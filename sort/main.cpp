@@ -45,7 +45,7 @@ tabulate::Table generate_table(const std::map<std::string, std::pair<std::functi
 	result_rows.push_back(test_entry.first);
 	for (auto const &sorting_map_entry: sort_list_with_clause)
 	  if (sorting_map_entry.second.first(test_entry.second))
-		result_rows.push_back(Utils::table_sorting(test_entry.second, sorting_map_entry.second.second));
+		result_rows.push_back(Utils::test_sorting_for_table(test_entry.second, sorting_map_entry.second.second));
 	  else
 		result_rows.push_back(" - ");
 	sort_results.add_row(result_rows);

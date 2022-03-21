@@ -12,11 +12,13 @@ class MergeSort : public ArraySort {
   ~MergeSort() override = default;
   void sort(long *array, size_t length) override;
  private:
-  void mergeSort(long array[], int start_idx, int end_idx);
-  void merge(long array[], int start_idx, int m, int end_idx);
+  void mergeSort(long array[], int l, int r);
+  void merge(long array[], int l, int m, int r);
 };
 
 void MergeSort::sort(long *array, size_t length) {
+  if (length < 1)
+	throw std::runtime_error("length cannot be less then '1'");
   mergeSort(array, 0, length - 1);
 }
 
@@ -24,8 +26,8 @@ void MergeSort::merge(long arr[], int l, int m, int r) {
   int i, j, k;
   int n1 = m - l + 1;
   int n2 = r - m;
-  int * L = new int[n1];
-  int * R = new int[n2];
+  long * L = new long[n1];
+  long * R = new long[n2];
 
   for (i = 0; i < n1; i++)
 	L[i] = arr[l + i];
@@ -52,11 +54,11 @@ void MergeSort::merge(long arr[], int l, int m, int r) {
   delete [] L;
 }
 
-void MergeSort::mergeSort(long arr[], int l, int r) {
+void MergeSort::mergeSort(long array[], int l, int r) {
   if (l < r) {
 	int m = l + (r - l) / 2;
-	mergeSort(arr, l, m);
-	mergeSort(arr, m + 1, r);
-	merge(arr, l, m, r);
+	mergeSort(array, l, m);
+	mergeSort(array, m + 1, r);
+	merge(array, l, m, r);
   }
 }

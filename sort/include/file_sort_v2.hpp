@@ -2,7 +2,24 @@
 // Created by yacopsae on 18/03/22.
 //
 
-#ifndef ALGORITHMS_SORT_INCLUDE_FILE_SORT_V2_HPP_
-#define ALGORITHMS_SORT_INCLUDE_FILE_SORT_V2_HPP_
+#pragma once
 
-#endif //ALGORITHMS_SORT_INCLUDE_FILE_SORT_V2_HPP_
+#include <string>
+
+class FileSort {
+ public:
+  FileSort(std::string &output_dir);
+
+  void file_sort(std::string in_file, int batch_size);
+
+ private:
+  const std::string &output_dir;
+
+};
+
+FileSort::FileSort(std::string &output_dir)
+: output_dir(output_dir) {}
+
+void FileSort::file_sort(std::string in_file, int batch_size) {
+
+}

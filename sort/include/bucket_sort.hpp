@@ -4,6 +4,7 @@
 #pragma once
 
 #include <cstring>
+#include <algorithm>
 #include "array_sort.hpp"
 #include "utils.hpp"
 

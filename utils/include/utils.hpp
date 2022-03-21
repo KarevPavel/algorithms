@@ -17,7 +17,8 @@ namespace Utils {
 template<typename R, typename ...Args>
 void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...), Args &&...args);
 
-void print_array(int array[], size_t lenght, std::ostream &ostream);
+template<typename T>
+void print_array(T array[], size_t lenght, std::ostream &ostream);
 
 template<typename T>
 std::string to_string(T t1);
@@ -37,20 +38,24 @@ void loop(Container container, long loop_count);
 template<typename TF, typename TDuration, class... TArgs>
 void run_with_timeout(TF &f, TDuration timeout, TArgs &&... args);
 
-template <typename T>
+template<typename T>
 void array_swap(T array[], int a, int b);
 
 void shift_array(int array[], int a, int b);
 
-bool check_array_sort(const long array[], size_t lenght);
+template<typename T>
+bool check_array_sort(const T array[], size_t lenght);
 
 long *random_array(int element_count);
 
 template<typename SortImpl>
 void test_sorting(const std::string &test_name, int element_count, SortImpl *sort);
 
+template<typename FileSort>
+std::string test_file_sorting_for_table(const std::string & input_file, int batch_size, FileSort *sort);
+
 template<typename SortImpl>
-std::string table_sorting(int element_count, SortImpl *sort);
+std::string test_sorting_for_table(int element_count, SortImpl *sort);
 
 template<typename SortImpl>
 void test_sorting_auto(const std::string &test_name, SortImpl *sort);
@@ -59,10 +64,17 @@ void print_array(int array[], int start_idx, int end_idx, std::ostream &ostream)
 
 void generate_file(const std::string &path, char separator, unsigned long N);
 
-int random_int(int a, int b);
+template<typename T>
+T random_number(T a, T b);
 
 template<typename T>
 T find_max(T *array, int length);
+
+template<typename T>
+T *array_part(T *array, int start_index, int end_index);
+
+template<typename T>
+void overwrite_file(const std::string &file, T *array, int size);
 }
 
 template<typename T>
@@ -140,7 +152,7 @@ inline void Utils::run_with_timeout(TF &f, TDuration timeout, TArgs &&... args) 
   }
 }
 
-template <typename T>
+template<typename T>
 inline void Utils::array_swap(T array[], int a, int b) {
   int x = array[a];
   array[a] = array[b];
@@ -160,17 +172,18 @@ inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ost
   ostream << "]" << std::endl;
 }
 
-inline void Utils::print_array(int array[], size_t lenght, std::ostream &ostream) {
+template<typename T>
+inline void Utils::print_array(T array[], size_t lenght, std::ostream &ostream) {
   ostream << "Array [ ";
   for (int i = 0; i < lenght; ++i)
 	ostream << array[i] << ", ";
   ostream << "]" << std::endl;
 }
-
-inline bool Utils::check_array_sort(const long array[], size_t lenght) {
-  for (int i = 1; i < lenght; ++i)
+template<typename T>
+inline bool Utils::check_array_sort(const T array[], size_t lenght) {
+  for (int i = 1; i < lenght || (&array[i]) == nullptr; ++i)
 	if (array[i] < array[i - 1]) {
-	  std::cout << "At indices [" << i << "] and [" << (i - 1) << "] values " << array[i] << " < " << array[i - 1]
+	  std::cout << "At indices [" << (i - 1) << "] and [" << i << "] values " << array[i - 1] << " > " << array[i]
 				<< " is true" << std::endl;
 	  return false;
 	}
@@ -180,7 +193,7 @@ inline bool Utils::check_array_sort(const long array[], size_t lenght) {
 long *Utils::random_array(int element_count) {
   auto array = new long[element_count];
   for (int i = 0; i < element_count; i++)
-	array[i] = random_int(0, element_count);
+	array[i] = random_number<long>(0, element_count);
   return array;
 }
 
@@ -199,7 +212,7 @@ inline void Utils::test_sorting(const std::string &test_name, int element_count,
 }
 
 template<typename SortImpl>
-inline std::string Utils::table_sorting(int element_count, SortImpl *sort) {
+inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *sort) {
   auto arr = random_array(element_count);
   auto start = std::chrono::steady_clock::now();
   sort->sort(arr, element_count);
@@ -232,14 +245,18 @@ inline void Utils::generate_file(const std::string &path, char separator, unsign
   std::ofstream ofstream;
   ofstream.open(path);
   for (int i = 0; i < N; i++) {
-	ofstream << random_int(0, 65535) << separator;
+	if (i == 0)
+	  ofstream << random_number<unsigned short>(0, 65535);
+	else
+	  ofstream << separator << random_number<unsigned short>(0, 65535);
   }
 }
 
-inline int Utils::random_int(int a, int b) {
+template<typename T>
+inline T Utils::random_number(T a, T b) {
   std::random_device rd;
   std::mt19937 mt(rd());
-  std::uniform_int_distribution<int> dist(a, b);
+  std::uniform_int_distribution<T> dist(a, b);
   return dist(mt);
 }
 
@@ -253,4 +270,39 @@ inline T Utils::find_max(T *array, int length) {
 	  max = array[r];
   }
   return max;
+}
+
+template<typename T>
+T *Utils::array_part(T *array, int start_index, int end_index) {
+  T *new_array = new T[end_index - start_index + 1];
+  for (int i = start_index, j = 0; i <= end_index; i++, j++)
+	new_array[j] = array[i];
+  return new_array;
+}
+
+template<typename T>
+void Utils::overwrite_file(const std::string &file, T *array, int size) {
+  std::ofstream ofstream;
+  //remove(file.c_str());
+  ofstream.open(file);
+  if (!ofstream)
+	throw std::runtime_error("Cannot open file! " + file);
+  for (int i = 0; i < size; i++)
+	if (i == 0)
+	  ofstream << array[i];
+	else
+	  ofstream << '\n' << array[i];
+}
+
+template<typename FileSort>
+inline std::string Utils::test_file_sorting_for_table(const std::string &input_file, int batch_size, FileSort *sort) {
+  auto start = std::chrono::high_resolution_clock::now();
+  sort->file_sort(input_file, batch_size);
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+  auto in_sec = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+  std::cout << "duration: " << duration.count() << " microseconds" << std::endl;
+  std::cout << "in_sec " << in_sec.count() << " seconds" << std::endl;
+  return std::to_string(fp_ms.count());
 }

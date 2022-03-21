@@ -3,6 +3,7 @@
 #include <cstring>
 #include "array_sort.hpp"
 #include "utils.hpp"
+#include "quick_sort_original.hpp"
 
 class OptimizedQuickSort: public OriginalQuickSort {
  public:
