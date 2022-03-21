@@ -31,3 +31,5 @@ cmake-build-debug
 # Executables
 *.exe
 *.app
+
+file/generated_numbers.txt
