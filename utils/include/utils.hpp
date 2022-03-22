@@ -46,16 +46,32 @@ void shift_array(int array[], int a, int b);
 template<typename T>
 bool check_array_sort(const T array[], size_t lenght);
 
-long *random_array(int element_count);
+template<typename T>
+T *random_array(T element_count);
+
+template<typename T>
+T *asc_array(T element_count);
 
 template<typename SortImpl>
 void test_sorting(const std::string &test_name, int element_count, SortImpl *sort);
 
 template<typename FileSort>
-std::string test_file_sorting_for_table(const std::string & input_file, int batch_size, FileSort *sort);
+std::string test_file_sorting_for_table(const std::string &input_file, int batch_size, FileSort *sort);
 
 template<typename SortImpl>
 std::string test_sorting_for_table(int element_count, SortImpl *sort);
+
+template<typename Tree>
+std::string test_tree_insert_random_array(int * array, int element_count, Tree *tree);
+
+template<typename Tree>
+std::string test_tree_insert_asc_array(int * array, int element_count, Tree *tree);
+
+template<typename Tree>
+std::string test_tree_search(int * array, int element_count, Tree *tree);
+
+template<typename Tree>
+std::string test_tree_delete(int * array, int element_count, Tree *tree);
 
 template<typename SortImpl>
 void test_sorting_auto(const std::string &test_name, SortImpl *sort);
@@ -190,12 +206,34 @@ inline bool Utils::check_array_sort(const T array[], size_t lenght) {
   return true;
 }
 
-long *Utils::random_array(int element_count) {
+/*long *Utils::random_array(int element_count) {
   auto array = new long[element_count];
   for (int i = 0; i < element_count; i++)
 	array[i] = random_number<long>(0, element_count);
   return array;
+}*/
+
+template<typename T>
+T *Utils::random_array(T element_count) {
+  auto array = new T[element_count];
+  for (int i = 0; i < element_count; i++)
+	array[i] = random_number<T>(0, std::numeric_limits<int>::max());
+  return array;
 }
+
+template<typename T>
+T *Utils::asc_array(T element_count) {
+  int *array = new T[element_count];
+  for (int i = 0; i < element_count; i++)
+	array[i] = i;
+  return array;
+}
+
+/*int * generate_asc_array() {
+  int *array = new int[ELEMENTS];
+  for (int i = 0; i < ELEMENTS; i++)
+	array[i] = i;
+}*/
 
 template<typename SortImpl>
 inline void Utils::test_sorting(const std::string &test_name, int element_count, SortImpl *sort) {
@@ -213,7 +251,7 @@ inline void Utils::test_sorting(const std::string &test_name, int element_count,
 
 template<typename SortImpl>
 inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *sort) {
-  auto arr = random_array(element_count);
+  auto arr = random_array<int>(element_count);
   auto start = std::chrono::steady_clock::now();
   sort->sort(arr, element_count);
   auto end = std::chrono::steady_clock::now();
@@ -222,12 +260,52 @@ inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *so
   return isOk ? std::to_string(fp_ms.count()) : "ERROR";
 }
 
+template<typename Tree>
+std::string Utils::test_tree_insert_asc_array(int * array, int element_count, Tree * tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = 0; i < element_count; i++)
+    tree->insert(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Tree>
+std::string Utils::test_tree_insert_random_array(int * array, int element_count, Tree * tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = 0; i < element_count; i++)
+	tree->insert(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Tree>
+std::string Utils::test_tree_search(int * array, int element_count, Tree* tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = element_count; i > 0; i/=10)
+	tree->search(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Tree>
+std::string Utils::test_tree_delete(int * array, int element_count, Tree *tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = element_count; i > 0; i/=10)
+	tree->search(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
 template<typename SortImpl>
 inline void Utils::test_sorting_auto(const std::string &test_name, SortImpl *sort) {
   std::cout << "--------" << test_name << "----------" << std::endl;
   for (int pow = 2; pow < 7; pow++) {
 	int element_count = std::pow(10, pow);
-	auto arr = random_array(element_count);
+	auto arr = random_array<int>(element_count);
 	auto start = std::chrono::steady_clock::now();
 	sort->sort(arr, element_count);
 	auto end = std::chrono::steady_clock::now();
