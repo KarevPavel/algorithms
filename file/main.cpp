@@ -42,7 +42,8 @@ tabulate::Table generate_table(
 }
 
 int main() {
-  //	Utils::generate_file(FILE_OUTPUT, '\n',1000000000);
+
+  	//Utils::generate_file(FILE_OUTPUT, '\n',10000000);
 /*
 
   FileSort file_sort{new ShellSort(), sort_result};
@@ -67,7 +68,7 @@ int main() {
   exponent["RadixSort"] = new FileSort{new RadixSort(), sort_result};
 
   tabulate::MarkdownExporter exporter;
-  std::cout << "Sorting 1000000000 numbers file" << std::endl;
+  std::cout << "Sorting 10000000 numbers file" << std::endl;
   auto exponent_table = generate_table(FILE_OUTPUT, exponent, tests);
   std::cout << exporter.dump(exponent_table) << std::endl;
 

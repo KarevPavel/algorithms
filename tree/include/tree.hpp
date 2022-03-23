@@ -2,7 +2,7 @@
 // Created by yacopsae on 21/03/22.
 //
 
-#pragma
+#pragma once
 
 
 template <typename T>

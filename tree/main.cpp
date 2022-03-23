@@ -2,18 +2,34 @@
 // Created by yacopsae on 21/03/22.
 //
 
-#include "bs_tree.hpp"
-#include "utils.hpp"
 #include <map>
 #include <tabulate/table.hpp>
 #include <tabulate/markdown_exporter.hpp>
+#include "bs_tree.hpp"
+#include "avl_tree.hpp"
+#include "utils.hpp"
+
+
+int main() {
+
+  auto *avl_tree = new AvlTree<int>();
+  avl_tree->insert(8);
+  avl_tree->insert(5);
+  avl_tree->insert(4);
+  avl_tree->insert(3);
+  avl_tree->insert(2);
+  avl_tree->insert(6);
+  avl_tree->insert(7);
+  avl_tree->insert(10);
+  std::cout << "DADAD";
+}
 
 tabulate::Table generate_table(Tree<int> *tree,
 							   const std::map<std::string, size_t> &tests,
 							   const std::function<int *(int)>& array_generator,
 							   const std::function<std::string(int *, int, Tree<int> *)>& func);
 
-int main() {
+int main2() {
   std::map<std::string, size_t> tests;
   tests["100"] = 100;
   tests["1000"] = 1000;
@@ -41,6 +57,8 @@ int main() {
   std::cout << std::endl << std::endl << "## RANDOM ARRAY" << std::endl;
   std::cout << exporter.dump(random_array_table) << std::endl;
 
+
+  return 0;
 }
 
 tabulate::Table generate_table(Tree<int> *tree,

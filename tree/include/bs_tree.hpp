@@ -1,7 +1,7 @@
 //
 // Created by yacopsae on 21/03/22.
 //
-#pragma
+#pragma once
 
 #include "tree.hpp"
 #include "iostream"
