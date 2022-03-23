@@ -89,7 +89,9 @@ void AvlTree<T>::small_left_rotation(Tree<T> t) {
 
 template<typename T>
 void AvlTree<T>::small_right_rotation(AvlNode * parent_node, AvlNode * node) {
-
+  auto * right = node->right();
+  node->right(right->left());
+  right->left(node);
 }
 
 template<typename T>

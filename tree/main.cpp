@@ -21,6 +21,7 @@ int main() {
   avl_tree->insert(6);
   avl_tree->insert(7);
   avl_tree->insert(10);
+  avl_tree->insert(11);
   std::cout << "DADAD";
 }
 
