@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include <functional>
 #include "map.hpp"
 
 template<typename K, typename V>
@@ -15,15 +16,22 @@ class ChainBucket : public Bucket<K, V> {
 
  protected:
   Bucket<K, V> *next() override;
-  void add(Bucket<K, V> *) override;
+  void next(Bucket<K, V> *) override;
+  bool has_next() override;
+  Bucket<K, V> *_next;
 };
 template<typename K, typename V>
 Bucket<K, V> *ChainBucket<K, V>::next() {
-  return nullptr;
+  return _next;
 }
 template<typename K, typename V>
-void ChainBucket<K, V>::add(Bucket<K, V> *) {
+void ChainBucket<K, V>::next(Bucket<K, V> *next) {
+  this->_next = next;
+}
 
+template<typename K, typename V>
+bool ChainBucket<K, V>::has_next() {
+  return next();
 }
 
 #define INITIAL_SIZE 10
@@ -32,17 +40,18 @@ template<typename K, typename V>
 class HashTable : public Map<K, V> {
  public:
 
-  HashTable() :
+  explicit HashTable(std::function<int(K)> hashcode_function) :
 	  _factor(INITIAL_FACTOR),
 	  _array_capacity(INITIAL_SIZE),
-	  _array_length(0) {
+	  _array_length(0),
+	  _hashcode_function(hashcode_function) {
 	this->buckets = new Bucket<K, V> *[INITIAL_SIZE];
   }
 
   void put(K k, V v) override;
   bool contains(K k) override;
   void remove(K k) override;
-  Bucket<K, V> &get(K k) override;
+  Bucket<K, V> *get(K k) override;
  protected:
   int hash(size_t hash_code) override;
   void rehash() override;
@@ -51,56 +60,74 @@ class HashTable : public Map<K, V> {
   int _factor;
   int _array_capacity;
   int _array_length;
+  std::function<int(K)> _hashcode_function;
 };
 
 template<typename K, typename V>
 void HashTable<K, V>::put(K k, V v) {
-  auto hashCode = std::hash<K>()(k);
-  if (++this->_array_length > this->_array_capacity) {
+  auto hashCode = _hashcode_function(k);
+  if (++this->_array_length > this->_array_capacity)
 	this->rehash();
-  }
-
   auto idx = hash(hashCode);
   auto element = this->buckets[idx];
   auto *new_element = new ChainBucket<K, V>(k, v);
-  if (element == nullptr)
+  if (!element)
 	this->buckets[idx] = new_element;
   else {
-	if (element->next())
-	  element->add(new_element);
+	while (element) {
+	  if (element->key() == new_element->key()) {
+		element->value(v);
+		return;
+	  }
+	  if (!element->has_next())
+		break;
+	  element = element->next();
+	}
+	element->next(new_element);
   }
 }
 
 template<typename K, typename V>
 bool HashTable<K, V>::contains(K k) {
-  //TODO: Если лист имеет элементы нужно проходить по листу!!!
-  return this->buckets[hash(std::hash<K>()(k))] != nullptr;
+  int idx = hash(_hashcode_function(k));
+  auto *bucket = this->buckets[idx];
+  if (!bucket)
+	return false;
+  while (bucket)
+	if (bucket->key() == k)
+	  return true;
+	else
+	  bucket = bucket->next();
+  return false;
 }
 
 template<typename K, typename V>
 void HashTable<K, V>::remove(K k) {
-  int idx = hash(std::hash<K>()(k));
+  int idx = hash(_hashcode_function(k));
   auto *bucket = this->buckets[idx];
   if (bucket == nullptr)
 	return;
-  if (bucket->next() != nullptr)
-	for (Bucket<K, V> *element = bucket->next(); element != nullptr; element = element->next())
-	  if (element->key() == k)
-		std::cout << "DELETE!" << std::endl;
+  while (bucket != nullptr)
+	if (bucket->key() == k) {
+	  this->buckets[idx] = bucket->next();
+	  delete bucket;
+	  return;
+	} else
+	  bucket = bucket->next();
 }
 
 template<typename K, typename V>
 void HashTable<K, V>::rehash() {
-  auto *new_buckets = new Bucket<K, V> * [this->_array_length * this->_factor];
+  auto *new_buckets = new Bucket<K, V> *[this->_array_length * this->_factor];
   for (int i = 0; i < this->_array_length; i++) {
 	auto *element = this->buckets[i];
-	if (element == nullptr)
+	if (!element)
 	  return;
-	new_buckets[hash(std::hash<K>()(element->key()))] = element;
+	new_buckets[hash(_hashcode_function(element->key()))] = element;
 	for (auto *e = element->next(); e != nullptr; e = e->next()) {
-	  int idx = hash(hash(std::hash<K>()(e->key())));
+	  int idx = hash(hash(_hashcode_function(e->key())));
 	  if (new_buckets[idx] != nullptr)
-		new_buckets[idx]->add(e);
+		new_buckets[idx]->next(e);
 	  else
 		new_buckets[idx] = e;
 	}
@@ -114,6 +141,16 @@ int HashTable<K, V>::hash(size_t hash_code) {
   return hash_code % this->_array_capacity;
 }
 template<typename K, typename V>
-Bucket<K, V> &HashTable<K, V>::get(K k) {
-  return *this->buckets[hash(std::hash<K>()(k))];
+Bucket<K, V> *HashTable<K, V>::get(K k) {
+  Bucket<K, V> *element = this->buckets[hash(_hashcode_function(k))];
+  if (!element->has_next())
+	return element;
+
+  while (element->has_next())
+	if (element->key() == k)
+	  return element;
+	else
+	  element = element->next();
+
+  return nullptr;
 }
