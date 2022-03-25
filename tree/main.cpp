@@ -7,12 +7,21 @@
 #include <tabulate/markdown_exporter.hpp>
 #include "bs_tree.hpp"
 #include "avl_tree.hpp"
+#include "prefix_tree.hpp"
 #include "utils.hpp"
 
 
 int main() {
 
-  auto *avl_tree = new AvlTree<int>();
+  auto prefix_tree = new PrefixTree<int>();
+
+  prefix_tree->insert("aaaa", new int(1));
+  prefix_tree->insert("aaab", new int(1));
+  prefix_tree->insert("as", new int(4));
+  std::cout << "aaaa: " << *prefix_tree->get("aaaa") << std::endl;
+  std::cout << "aaaa: " << *prefix_tree->get("as") << std::endl;
+
+  /*auto *avl_tree = new AvlTree<int>();
   avl_tree->insert(8);
   avl_tree->insert(5);
   avl_tree->insert(4);
@@ -23,6 +32,7 @@ int main() {
   avl_tree->insert(10);
   avl_tree->insert(11);
   std::cout << "DADAD";
+  auto t = "dada";*/
 }
 
 tabulate::Table generate_table(Tree<int> *tree,
@@ -83,6 +93,7 @@ tabulate::Table generate_table(Tree<int> *tree,
 
 	int element_count = test_entry.second;
 	int *array = array_generator(element_count);
+	test_entry.first.begin();
 	result_rows.push_back(test_entry.first);
 	result_rows.push_back(func(array, element_count, tree));
 	result_rows.push_back(Utils::test_tree_search(array, element_count, tree));
