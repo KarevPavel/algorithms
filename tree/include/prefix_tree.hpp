@@ -69,9 +69,11 @@ PrefixTreeNode<V> *PrefixTreeNode<V>::next_child(PrefixTreeNode<V> *child) {
 template<typename V>
 class PrefixTree {
  public:
-  void del(std::string);
+  void del(const std::string&);
   void insert(const std::string &, V *);
-  V *get(std::string);
+  V *get(const std::string&);
+  PrefixTreeNode<V> * find(const std::string& key);
+
  private:
   PrefixTreeNode<V> *root;
 
@@ -98,7 +100,7 @@ void PrefixTree<V>::insert(const std::string &key, V *value) {
 
   auto *node = find_sibling(root, key[0]);
   if (node == nullptr) {
-	if (key.length() - 1 > 0)
+	if (key.length() > 1)
 	  node = root->next_sibling(new PrefixTreeNode<V>(key[0]));
 	else {
 	  root->next_sibling(new PrefixTreeNode<V>(key[0], value));
@@ -106,7 +108,6 @@ void PrefixTree<V>::insert(const std::string &key, V *value) {
 	}
   }
 
-  //node = find_sibling(root, key[0]);
   for (int i = 0; i < key.length(); i++) {
 	if (node->key() == key[i]) {
 	  if (node != nullptr && node->key() == key[i] && i == key.length() - 1) {
@@ -116,14 +117,18 @@ void PrefixTree<V>::insert(const std::string &key, V *value) {
 	  node = node->next_child();
 	  continue;
 	}
-	if (!find_child(node, key[i]))
-	  node = node->next_sibling(new PrefixTreeNode<V>(key[i]));
+	if (!find_child(node, key[i])) {
+	  if (i == key.length() - 1) {
+		node->next_sibling(new PrefixTreeNode<V>(key[i], value));
+		break;
+	  } else
+		node = node->next_sibling(new PrefixTreeNode<V>(key[i]));
+	}
   }
 }
 
 template<typename V>
 PrefixTreeNode<V> *PrefixTree<V>::find_sibling(PrefixTreeNode<V> *node, char k) {
-  //node = node->next_sibling();
   while (node != nullptr) {
 	if (node->key() != k)
 	  node = node->next_sibling();
@@ -151,29 +156,35 @@ void PrefixTreeNode<V>::value(V *value) {
 }
 
 template<typename V>
-void PrefixTree<V>::del(std::string key) {
-
+void PrefixTree<V>::del(const std::string& key) {
+  auto * node = find(key);
+  //Самое простое удаление, присваиваем значению null
+  node->value(nullptr);
 }
 
 template<typename V>
-V *PrefixTree<V>::get(std::string key) {
+V *PrefixTree<V>::get(const std::string& key) {
+  auto * node = find(key);
+  return node && node->value() != nullptr ? node->value() : nullptr;
+}
+
+template<typename V>
+PrefixTreeNode<V> * PrefixTree<V>::find(const std::string& key) {
   if (key.length() < 1)
 	throw std::runtime_error("Key cannot be empty!");
 
-  auto *node = find_sibling(root, key[0]);
-  for (int i = 0; i < key.length(); i++, node = node->next_child()) {
-	while (node != nullptr && node->key() != key[i])
-	  node = find_child(node, key[i]);
-	if (node == nullptr || node->key() != key[i]) {
-	  while (node != nullptr && node->key() != key[i])
-		node = find_sibling(node, key[i]);
-	  break;
-	}
-	int last_index = key.length() - 1;
-	if (i == last_index && node->key() == key[last_index]) {
-	  return node->value();
-	}
+  auto *node = root;
+  for (int i = 0; i < key.length(); i++) {
+	node = find_sibling(node, key[i]);
+	if (node == nullptr)
+	  return nullptr;
+
+	if (i == key.length() - 1 && node->key() == key[i])
+	  return node;
+
+	node = find_child(node, key[i]);
+	if (node == nullptr)
+	  return nullptr;
   }
   return nullptr;
 }
-
