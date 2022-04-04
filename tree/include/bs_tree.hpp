@@ -10,6 +10,67 @@ template<typename T>
 using Node = typename Tree<T>::Node;
 
 template<typename T>
+struct BSTreeNode : public Node<T> {
+ public:
+  explicit BSTreeNode(T value);
+  ~BSTreeNode();
+  T &value();
+  Node<T> *left();
+  Node<T> *right();
+
+  void value(T &value);
+  void left(Node<T> *node);
+  void right(Node<T> *node);
+
+ protected:
+  T _value;
+  Node<T> *_left;
+  Node<T> *_right;
+};
+
+
+template <typename T>
+BSTreeNode<T>::BSTreeNode(T value): _value(value) {}
+
+template <typename T>
+BSTreeNode<T>::~BSTreeNode() {
+  _left = nullptr;
+  _right = nullptr;
+  delete _left;
+  delete _right;
+}
+template <typename T>
+T & BSTreeNode<T>::value() {
+  return this->_value;
+}
+
+template <typename T>
+typename Tree<T>::Node * BSTreeNode<T>::left() {
+  return this->_left;
+}
+
+template <typename T>
+typename Tree<T>::Node * BSTreeNode<T>::right() {
+  return this->_right;
+}
+
+template <typename T>
+void BSTreeNode<T>::value(T & value) {
+  this->_value = value;
+}
+
+template <typename T>
+void BSTreeNode<T>::left(Node<T> * node) {
+  this->_left = node;
+}
+
+template <typename T>
+void BSTreeNode<T>::right(Node<T> * node) {
+  this->_right = node;
+}
+
+
+template<typename T>
 class BSTree : public Tree<T> {
  public:
   BSTree() = default;
@@ -70,7 +131,7 @@ void BSTree<T>::remove(T x) {
 template<typename T>
 inline void BSTree<T>::insert(T x) {
   if (root == nullptr)
-	root = new Node<T>(x);
+	root = new BSTreeNode<T>(x);
   else if (search(x))
 	return;
   else
@@ -83,11 +144,11 @@ void BSTree<T>::insert(Node<T> *node, T x) {
 	if (node->right() != nullptr)
 	  insert(node->right(), x);
 	else
-	  node->right(new Node<T>(x));
+	  node->right(new BSTreeNode<T>(x));
   else if (node->left() != nullptr)
 	insert(node->left(), x);
   else
-	node->left(new Node<T>(x));
+	node->left(new BSTreeNode<T>(x));
 }
 
 template<typename T>

@@ -12,8 +12,20 @@
 
 
 int main() {
-
-
+  auto * avl_tree = new AvlTree<int>();
+  avl_tree->insert(1);
+  avl_tree->insert(2);
+  avl_tree->insert(3);
+  avl_tree->insert(4);
+  avl_tree->insert(5);
+  avl_tree->insert(6);
+  avl_tree->insert(7);
+  avl_tree->insert(8);
+  avl_tree->insert(9);
+  avl_tree->insert(10);
+  avl_tree->insert(11);
+  avl_tree->insert(12);
+  std::cout << " avl tree" << std::endl;
 }
 
 tabulate::Table generate_table(Tree<int> *tree,

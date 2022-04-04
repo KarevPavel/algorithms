@@ -3,33 +3,18 @@
 //
 
 #pragma once
+#include "simple_entry.hpp"
 
 template<typename K, typename V>
-class Bucket {
+class Bucket: public SimpleEntry<K, V> {
  public:
   Bucket() = default;
-  Bucket(K key, V value) : _key(key), _value(value) {}
+  Bucket(K key, V value) : SimpleEntry<K, V>(key, value) {}
 
  public:
   virtual Bucket *next() = 0;
   virtual void next(Bucket *) = 0;
   virtual bool has_next() = 0;
-
-  K key() {
-	return _key;
-  }
-
-  V value() {
-	return _value;
-  }
-
-  void value(V value) {
-	this->_value = value;
-  }
-
- protected:
-  K _key;
-  V _value;
 };
 
 template<typename K, typename V>
@@ -42,5 +27,4 @@ class Map {
  protected:
   virtual void rehash() = 0;
   virtual int hash(size_t hash_code) = 0;
-  Bucket<K, V> **buckets;
 };

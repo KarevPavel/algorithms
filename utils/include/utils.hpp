@@ -62,16 +62,26 @@ template<typename SortImpl>
 std::string test_sorting_for_table(int element_count, SortImpl *sort);
 
 template<typename Tree>
-std::string test_tree_insert_random_array(int * array, int element_count, Tree *tree);
+std::string test_tree_insert_random_array(int *array, int element_count, Tree *tree);
 
 template<typename Tree>
-std::string test_tree_insert_asc_array(int * array, int element_count, Tree *tree);
+std::string test_tree_insert_asc_array(int *array, int element_count, Tree *tree);
 
 template<typename Tree>
-std::string test_tree_search(int * array, int element_count, Tree *tree);
+std::string test_tree_search(int *array, int element_count, Tree *tree);
 
 template<typename Tree>
-std::string test_tree_delete(int * array, int element_count, Tree *tree);
+std::string test_tree_delete(int *array, int element_count, Tree *tree);
+
+
+template<typename Map>
+std::string test_map_insert(int *array, int element_count, Map *map);
+
+template<typename Map>
+std::string test_map_search(int *array, int element_count, Map *tree);
+
+template<typename Map>
+std::string test_map_delete(int *array, int element_count, Map *tree);
 
 template<typename SortImpl>
 void test_sorting_auto(const std::string &test_name, SortImpl *sort);
@@ -261,17 +271,7 @@ inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *so
 }
 
 template<typename Tree>
-std::string Utils::test_tree_insert_asc_array(int * array, int element_count, Tree * tree) {
-  auto start = std::chrono::steady_clock::now();
-  for (int i = 0; i < element_count; i++)
-    tree->insert(array[i]);
-  auto end = std::chrono::steady_clock::now();
-  std::chrono::duration<double, std::milli> fp_ms = end - start;
-  return std::to_string(fp_ms.count());
-}
-
-template<typename Tree>
-std::string Utils::test_tree_insert_random_array(int * array, int element_count, Tree * tree) {
+std::string Utils::test_tree_insert_asc_array(int *array, int element_count, Tree *tree) {
   auto start = std::chrono::steady_clock::now();
   for (int i = 0; i < element_count; i++)
 	tree->insert(array[i]);
@@ -281,9 +281,19 @@ std::string Utils::test_tree_insert_random_array(int * array, int element_count,
 }
 
 template<typename Tree>
-std::string Utils::test_tree_search(int * array, int element_count, Tree* tree) {
+std::string Utils::test_tree_insert_random_array(int *array, int element_count, Tree *tree) {
   auto start = std::chrono::steady_clock::now();
-  for (int i = element_count; i > 0; i/=10)
+  for (int i = 0; i < element_count; i++)
+	tree->insert(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Tree>
+std::string Utils::test_tree_search(int *array, int element_count, Tree *tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = element_count; i > 0; i /= 10)
 	tree->search(array[i]);
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
@@ -291,10 +301,40 @@ std::string Utils::test_tree_search(int * array, int element_count, Tree* tree) 
 }
 
 template<typename Tree>
-std::string Utils::test_tree_delete(int * array, int element_count, Tree *tree) {
+std::string Utils::test_tree_delete(int *array, int element_count, Tree *tree) {
   auto start = std::chrono::steady_clock::now();
-  for (int i = element_count; i > 0; i/=10)
-	tree->search(array[i]);
+  for (int i = element_count; i > 0; i /= 10)
+	tree->del(array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Map>
+std::string Utils::test_map_insert(int *array, int element_count, Map *map) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = 0; i < element_count; i++)
+	map->put(std::to_string((char)array[i]), array[i]);
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Map>
+std::string Utils::test_map_search(int *array, int element_count, Map *tree) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = element_count; i > 0; i /= 10)
+	tree->contains(std::to_string((char)array[i]));
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return std::to_string(fp_ms.count());
+}
+
+template<typename Map>
+std::string Utils::test_map_delete(int *array, int element_count, Map *map) {
+  auto start = std::chrono::steady_clock::now();
+  for (int i = element_count; i > 0; i /= 10)
+	map->remove(std::to_string((char)array[i]));
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
   return std::to_string(fp_ms.count());

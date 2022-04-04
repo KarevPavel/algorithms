@@ -36,11 +36,12 @@ class AvlTree : public Tree<T> {
 
   AvlNode *root;
 
+ private:
   void insert(AvlNode *node, T x);
-  void small_left_rotation(Tree<T> t);
-  void small_right_rotation(AvlNode *, AvlNode *);
-  void big_left_rotation(Tree<T> t);
-  void big_right_rotation(Tree<T> t);
+  bool small_left_rotation(AvlNode *, AvlNode *);
+  bool small_right_rotation(AvlNode *, AvlNode *);
+  void big_left_rotation(AvlNode *, AvlNode *);
+  void big_right_rotation(AvlNode *, AvlNode *);
   void rebalance(AvlNode *, AvlNode *);
   int calc_height(AvlNode *node);
 
@@ -83,40 +84,88 @@ void AvlTree<T>::remove(T x) {
 }
 
 template<typename T>
-void AvlTree<T>::small_left_rotation(Tree<T> t) {
+bool AvlTree<T>::small_left_rotation(AvlNode *parent_node, AvlNode *node) {
+  auto *right = node->right();
+  auto *right_left = right->left();
+  auto *right_right = right->right();
 
-}
+  if (right_right == nullptr || right_left == nullptr)
+	return false;
 
-template<typename T>
-void AvlTree<T>::small_right_rotation(AvlNode * parent_node, AvlNode * node) {
-  auto * right = node->right();
-  node->right(right->left());
+  if (right_right->depth() < right_left->depth())
+	return false;
+
   right->left(node);
+  node->right(right_left);
+  parent_node->left(right);
+  return true;
 }
 
 template<typename T>
-void AvlTree<T>::big_left_rotation(Tree<T> t) {
+bool AvlTree<T>::small_right_rotation(AvlNode *parent_node, AvlNode *node) {
+  auto *left = node->left();
+  auto *left_left = left->left();
+  auto *left_right = left->right();
+
+  if (left_left == nullptr || left_right == nullptr)
+	return false;
+
+  if (left_left->depth() < left_right->depth())
+	return false;
+
+  left->right(node);
+  node->left(left_right);
+
+  if (parent_node != nullptr) {
+	if (parent_node->left() != nullptr
+		&& parent_node->left() == node)
+	  parent_node->left(left);
+	else
+	  parent_node->right(left);
+  } else {
+	root = left;
+  }
+
+  return true;
+}
+
+template<typename T>
+void AvlTree<T>::big_left_rotation(AvlNode *, AvlNode *) {
 
 }
 
 template<typename T>
-void AvlTree<T>::big_right_rotation(Tree<T> t) {
+void AvlTree<T>::big_right_rotation(AvlNode *, AvlNode *) {
 
 }
 
 template<typename T>
-void AvlTree<T>::rebalance(AvlNode * node_parent, AvlNode *node) {
+void AvlTree<T>::rebalance(AvlNode *node_parent, AvlNode *node) {
   if (node == nullptr ||
 	  node->left() == nullptr ||
-	  node->right() == nullptr ||
-	  std::abs(node->left()->depth() - node->right()->depth()) < 2)
+	  node->right() == nullptr) {
 	return;
+  }
+
+  if (std::abs(node->left()->depth() - node->right()->depth()) < 2) {
+	return;
+  }
 
   rebalance(node, node->right());
   rebalance(node, node->left());
 
-  if (node->left()->depth() >= node->right()->depth())
-	small_right_rotation(node_parent, node);
+  if (node->left()->depth() >= node->right()->depth()) {
+	if (!small_right_rotation(node_parent, node)) {
+	  small_left_rotation(node, node->left());
+	  small_right_rotation(node_parent, node);
+	}
+  }
+  if (node->right()->depth() >= node->left()->depth()) {
+	if (!small_left_rotation(node_parent, node)) {
+	  small_right_rotation(node_parent, node);
+	  small_left_rotation(node, node->right());
+	}
+  }
 }
 
 template<typename T>

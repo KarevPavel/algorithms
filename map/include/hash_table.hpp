@@ -7,32 +7,7 @@
 #include <iostream>
 #include <functional>
 #include "map.hpp"
-
-template<typename K, typename V>
-class ChainBucket : public Bucket<K, V> {
- public:
-  ChainBucket() = default;
-  ChainBucket(K key, V value) : Bucket<K, V>(key, value) {}
-
- protected:
-  Bucket<K, V> *next() override;
-  void next(Bucket<K, V> *) override;
-  bool has_next() override;
-  Bucket<K, V> *_next;
-};
-template<typename K, typename V>
-Bucket<K, V> *ChainBucket<K, V>::next() {
-  return _next;
-}
-template<typename K, typename V>
-void ChainBucket<K, V>::next(Bucket<K, V> *next) {
-  this->_next = next;
-}
-
-template<typename K, typename V>
-bool ChainBucket<K, V>::has_next() {
-  return next();
-}
+#include "chain_bucket.hpp"
 
 #define INITIAL_SIZE 10
 #define INITIAL_FACTOR 2
@@ -60,6 +35,7 @@ class HashTable : public Map<K, V> {
   int _factor;
   int _array_capacity;
   int _array_length;
+  Bucket<K, V> **buckets;
   std::function<int(K)> _hashcode_function;
 };
 
@@ -132,6 +108,7 @@ void HashTable<K, V>::rehash() {
 		new_buckets[idx] = e;
 	}
   }
+  this->_array_length *= this->_factor;
   delete this->buckets;
   this->buckets = new_buckets;
 }
@@ -140,6 +117,7 @@ template<typename K, typename V>
 int HashTable<K, V>::hash(size_t hash_code) {
   return hash_code % this->_array_capacity;
 }
+
 template<typename K, typename V>
 Bucket<K, V> *HashTable<K, V>::get(K k) {
   Bucket<K, V> *element = this->buckets[hash(_hashcode_function(k))];
