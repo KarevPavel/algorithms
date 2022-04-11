@@ -20,13 +20,13 @@ class HashTable : public Map<K, V> {
 	  _array_capacity(INITIAL_SIZE),
 	  _array_length(0),
 	  _hashcode_function(hashcode_function) {
-	this->buckets = new Bucket<K, V> *[INITIAL_SIZE];
+	this->buckets = new ChainBucket<K, V> *[INITIAL_SIZE];
   }
 
   void put(K k, V v) override;
   bool contains(K k) override;
   void remove(K k) override;
-  Bucket<K, V> *get(K k) override;
+  ChainBucket<K, V> *get(K k) override;
  protected:
   int hash(size_t hash_code) override;
   void rehash() override;
@@ -35,7 +35,7 @@ class HashTable : public Map<K, V> {
   int _factor;
   int _array_capacity;
   int _array_length;
-  Bucket<K, V> **buckets;
+  ChainBucket<K, V> **buckets;
   std::function<int(K)> _hashcode_function;
 };
 
@@ -94,7 +94,7 @@ void HashTable<K, V>::remove(K k) {
 
 template<typename K, typename V>
 void HashTable<K, V>::rehash() {
-  auto *new_buckets = new Bucket<K, V> *[this->_array_length * this->_factor];
+  auto *new_buckets = new ChainBucket<K, V> *[this->_array_length * this->_factor];
   for (int i = 0; i < this->_array_length; i++) {
 	auto *element = this->buckets[i];
 	if (!element)
@@ -119,8 +119,8 @@ int HashTable<K, V>::hash(size_t hash_code) {
 }
 
 template<typename K, typename V>
-Bucket<K, V> *HashTable<K, V>::get(K k) {
-  Bucket<K, V> *element = this->buckets[hash(_hashcode_function(k))];
+ChainBucket<K, V> *HashTable<K, V>::get(K k) {
+  ChainBucket<K, V> *element = this->buckets[hash(_hashcode_function(k))];
   if (!element->has_next())
 	return element;
 

@@ -25,7 +25,7 @@ int main() {
 
 
   tests["100"] = 10;
-  tests["1000"] = 1000;
+  tests["100"] = 100;
 
   std::map<std::string, Map<std::string, int> *> random_array_tree_map;
 

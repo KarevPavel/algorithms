@@ -6,25 +6,25 @@
 #include "map.hpp"
 
 template<typename K, typename V>
-class ChainBucket : public Bucket<K, V> {
+class ChainBucket : public SimpleEntry<K, V> {
  public:
   ChainBucket() = default;
-  ChainBucket(K key, V value) : Bucket<K, V>(key, value) {}
+  ChainBucket(K key, V value) : SimpleEntry<K, V>(key, value) {}
 
- protected:
-  Bucket<K, V> *next() override;
-  void next(Bucket<K, V> *) override;
-  bool has_next() override;
+  ChainBucket<K, V> *next();
+  void next(ChainBucket<K, V> *);
+  bool has_next();
 
  private:
-  Bucket<K, V> *_next;
+  ChainBucket<K, V> *_next;
 };
+
 template<typename K, typename V>
-Bucket<K, V> *ChainBucket<K, V>::next() {
+ChainBucket<K, V> *ChainBucket<K, V>::next() {
   return _next;
 }
 template<typename K, typename V>
-void ChainBucket<K, V>::next(Bucket<K, V> *next) {
+void ChainBucket<K, V>::next(ChainBucket<K, V> *next) {
   this->_next = next;
 }
 
