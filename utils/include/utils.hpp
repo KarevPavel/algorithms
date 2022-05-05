@@ -11,6 +11,13 @@
 #include <future>
 #include <fstream>
 #include <random>
+#include <sstream>
+
+enum POSITION {
+  START,
+  MID,
+  END
+};
 
 namespace Utils {
 
@@ -101,6 +108,8 @@ T *array_part(T *array, int start_index, int end_index);
 
 template<typename T>
 void overwrite_file(const std::string &file, T *array, int size);
+
+std::pair<std::string, std::string> generate_text_and_pattern(int, const std::string&, POSITION);
 }
 
 template<typename T>
@@ -261,7 +270,7 @@ inline void Utils::test_sorting(const std::string &test_name, int element_count,
 
 template<typename SortImpl>
 inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *sort) {
-  auto arr = random_array<int>(element_count);
+  auto arr = random_array<long>(element_count);
   auto start = std::chrono::steady_clock::now();
   sort->sort(arr, element_count);
   auto end = std::chrono::steady_clock::now();
@@ -304,7 +313,7 @@ template<typename Tree>
 std::string Utils::test_tree_delete(int *array, int element_count, Tree *tree) {
   auto start = std::chrono::steady_clock::now();
   for (int i = element_count; i > 0; i /= 10)
-	tree->del(array[i]);
+	tree->remove(array[i]);
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
   return std::to_string(fp_ms.count());
@@ -423,4 +432,27 @@ inline std::string Utils::test_file_sorting_for_table(const std::string &input_f
   std::cout << "duration: " << duration.count() << " microseconds" << std::endl;
   std::cout << "in_sec " << in_sec.count() << " seconds" << std::endl;
   return std::to_string(fp_ms.count());
+}
+
+inline std::pair<std::string, std::string> Utils::generate_text_and_pattern(int text_length = 1024,
+																			const std::string& pattern = "@@@@@@",
+																			POSITION position = POSITION::MID) {
+  std::stringstream ss_text;
+  std::stringstream ss_pattern;
+  for (int i = 0; i < text_length; i++)
+    ss_text << 'A';
+
+  std::string text = ss_text.str();
+  int pattern_length = pattern.length();
+
+  int insert_pattern_pos = 0;
+  if (position == POSITION::MID)
+	insert_pattern_pos = text_length / 2;
+  else if (position == POSITION::END)
+    insert_pattern_pos = text_length - pattern_length;
+
+  for (int i = 0; i < pattern_length; i++)
+    text[insert_pattern_pos + i] = pattern[i];
+
+  return std::make_pair(pattern, text);
 }

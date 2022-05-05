@@ -62,7 +62,7 @@ void VectorArray<T>::put(int index, T item) {
 
 template<typename T>
 int VectorArray<T>::size() {
-  return _capacity;
+  return _length;
 }
 
 template<typename T>

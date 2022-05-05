@@ -46,12 +46,8 @@ class HashTableWOA : public Map<K, V> {
 template<typename K, typename V>
 void HashTableWOA<K, V>::put(K k, V v) {
   auto hashCode = _hashcode_function(k);
-  if (this->_array_length > this->_array_capacity)
-	this->rehash();
   auto index = hash(hashCode);
-
   auto element = this->buckets[index];
-
   while (element != nullptr) {
 	if (_array_capacity < ++index) {
 	  this->rehash();
@@ -80,16 +76,27 @@ void HashTableWOA<K, V>::remove(K k) {
 
 template<typename K, typename V>
 void HashTableWOA<K, V>::rehash() {
-  auto *new_buckets = new DeletableEntry<K, V> *[this->_array_length * this->_factor];
-  for (int i = 0; i < this->_array_length; i++) {
+  std::cout << "BEFORE REHASH ";
+  Utils::print_array(this->buckets, _array_capacity, std::cout);
+  auto new_capacity = _array_capacity * this->_factor;
+  auto *new_buckets = new DeletableEntry<K, V> *[new_capacity];
+  for (int i = 0; i < this->_array_capacity; i++) {
 	auto *element = this->buckets[i];
 	if (!element)
 	  continue;
-	new_buckets[hash(_hashcode_function(element->key()))] = element;
+	auto new_index = hash(_hashcode_function(element->key()));
+
+	std::cout << "element " << element << " hash index: " << new_index << std::endl;
+
+	std::cout << "element " << element << " hash index: " << new_index << std::endl;
+	new_buckets[new_index] = element;
   }
-  this->_array_length *= this->_factor;
-  delete [] this->buckets;
+  _array_capacity = new_capacity;
+  //delete this->buckets;
   this->buckets = new_buckets;
+  std::cout << "AFTER REHASH ";
+  Utils::print_array(new_buckets, _array_capacity, std::cout);
+  std::cout << "AFTER REHASH ";
 }
 
 template<typename K, typename V>

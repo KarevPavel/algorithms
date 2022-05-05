@@ -10,30 +10,12 @@
 #include "prefix_tree.hpp"
 #include "utils.hpp"
 
-
-int main() {
-  auto * avl_tree = new AvlTree<int>();
-  avl_tree->insert(1);
-  avl_tree->insert(2);
-  avl_tree->insert(3);
-  avl_tree->insert(4);
-  avl_tree->insert(5);
-  avl_tree->insert(6);
-  avl_tree->insert(7);
-  avl_tree->insert(8);
-  avl_tree->insert(9);
-  avl_tree->insert(10);
-  avl_tree->insert(11);
-  avl_tree->insert(12);
-  std::cout << " avl tree" << std::endl;
-}
-
 tabulate::Table generate_table(Tree<int> *tree,
 							   const std::map<std::string, size_t> &tests,
-							   const std::function<int *(int)>& array_generator,
-							   const std::function<std::string(int *, int, Tree<int> *)>& func);
+							   const std::function<int *(int)> &array_generator,
+							   const std::function<std::string(int *, int, Tree<int> *)> &func);
 
-int main2() {
+int main() {
   std::map<std::string, size_t> tests;
   tests["100"] = 100;
   tests["1000"] = 1000;
@@ -61,14 +43,13 @@ int main2() {
   std::cout << std::endl << std::endl << "## RANDOM ARRAY" << std::endl;
   std::cout << exporter.dump(random_array_table) << std::endl;
 
-
   return 0;
 }
 
 tabulate::Table generate_table(Tree<int> *tree,
 							   const std::map<std::string, size_t> &tests,
-							   const std::function<int *(int)>& array_generator,
-							   const std::function<std::string(int *, int, Tree<int> *)>& func) {
+							   const std::function<int *(int)> &array_generator,
+							   const std::function<std::string(int *, int, Tree<int> *)> &func) {
   tabulate::Table sort_results;
   tabulate::Table::Row_t header_rows;
   header_rows.push_back("elements");

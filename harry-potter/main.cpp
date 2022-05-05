@@ -1,6 +1,5 @@
 #include <iostream>
 #include "cmath"
-#include <algorithm>
 
 int main() {
   for (int x = 0; x < 25; x++) {

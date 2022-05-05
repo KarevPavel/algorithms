@@ -20,19 +20,17 @@ int main() {
   std::map<std::string, size_t> tests;
 
 
-  auto *hash_table_with_open_addressing = new HashTableWOA<std::string, int>(Hash::simple_hash);
 
 
-
-  tests["100"] = 10;
-  tests["100"] = 100;
+  //tests["10"] = 10;
+  tests["20"] = 20;
 
   std::map<std::string, Map<std::string, int> *> random_array_tree_map;
 
   auto *hash_table = new HashTable<std::string, int>(Hash::simple_hash);
   random_array_tree_map["HashTable"] = hash_table;
 
-  //auto *hash_table_with_open_addressing = new HashTableWOA<std::string, int>(Hash::simple_hash);
+  auto *hash_table_with_open_addressing = new HashTableWOA<std::string, int>(Hash::simple_hash);
   random_array_tree_map["HashTableWOA"] = hash_table_with_open_addressing;
 
   auto hash_table_result_table = generate_table(hash_table,
@@ -48,6 +46,7 @@ int main() {
 
   std::cout << std::endl << std::endl << "## Hash table open addressing" << std::endl;
   std::cout << exporter.dump(hash_table_woa_result_table) << std::endl;
+
 
   return 0;
 }

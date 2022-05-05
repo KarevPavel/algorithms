@@ -20,6 +20,7 @@
 #include <bucket_sort.hpp>
 #include <counting_sort.hpp>
 #include <radix_sort.hpp>
+#include <bubble_sort_v2.hpp>
 
 template<size_t max>
 bool le(size_t arg) {
@@ -69,8 +70,9 @@ int main() {
   exponent["InsertionSort"] = {&le<100000>, new InsertionSort()};
   exponent["Original - ShellSort"] = {&le<1000000>, new ShellSort()};
   exponent["SelectionSort"] = {&le<100000>, new SelectionSort()};
+  exponent["BubbleSortV2"] = {&le<100000>, new BubbleSortV2()};
 
-  std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> logariphm;
+  /*std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> logariphm;
   logariphm["HeapSort"] = {&no_check, new HeapSort()};
   logariphm["Original - QuickSort"] = {&no_check, new OriginalQuickSort()};
   logariphm["Optimized - QuickSort"] = {&no_check, new OptimizedQuickSort()};
@@ -80,20 +82,20 @@ int main() {
   std::map<std::string, std::pair<std::function<bool(size_t)>, ArraySort *>> linear;
   linear["BucketSort"] = {&no_check, new BucketSort()};
   linear["CountingSort"] = {&no_check, new CountingSort()};
-  linear["RadixSort"] = {&no_check, new RadixSort()};
+  linear["RadixSort"] = {&no_check, new RadixSort()};*/
 
   tabulate::MarkdownExporter exporter;
 
   std::cout << "## O(n ^ 2)" << std::endl;
   auto exponent_table = generate_table(exponent, tests);
   std::cout << exporter.dump(exponent_table) << std::endl;
-
+/*
   std::cout << "## O(n * log n)" << std::endl;
   auto logariphm_table = generate_table(logariphm, tests);
   std::cout << exporter.dump(logariphm_table) << std::endl;
 
   std::cout << "## O(N)" << std::endl;
   auto linear_table = generate_table(linear, tests);
-  std::cout << exporter.dump(linear_table) << std::endl;
+  std::cout << exporter.dump(linear_table) << std::endl;*/
 }
 
