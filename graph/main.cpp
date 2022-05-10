@@ -3,9 +3,11 @@
 //
 
 #include <iostream>
-#include <demucron_v_2.hpp>
+#include <demucron.hpp>
+#include <kosaraju.hpp>
 
 int main() {
+/*
   auto *arr = new int *[6]{
 	  new int[6]{0, 0, 0, 0, 0, 1},
 	  new int[6]{1, 0, 0, 1, 1, 1},
@@ -24,5 +26,15 @@ int main() {
 		std::cout << "\tVERTEX INDX: " << result[lvl]->get(idx) << std::endl;
 	}
   }
+*/
 
+
+  auto * arr2 = new int * [4]{
+	  new int[4]{0, 1, 0, 1},
+	  new int[4]{0, 0, 1, 0},
+	  new int[4]{1, 0, 0, 0},
+	  new int[4]{0, 0, 1, 0}
+  };
+  Kosaraju kosaraju {arr2, 4};
+  kosaraju.calc();
 }

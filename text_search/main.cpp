@@ -9,13 +9,22 @@
 
 #define TEXT_LENGTH 5000
 #define PATTERN "@@@@@@"
-#define POSITION POSITION::END
-
+#define POSITION POSITION::MID
+#define TEST_ITERATION_COUNT 10000
 int main() {
+
+  tabulate::Table tbl;
+  tbl.add_row({
+				  "FULLSCAN",
+				  "PREFIXSCAN",
+				  "SUFFIXSCAN"
+			  });
+
   double fullscan_result = 0;
   double prefixscan_result = 0;
   double suffixscan_result = 0;
-  for (int test_n = 0; test_n < 10000; test_n++) {
+
+  for (int test_n = 0; test_n < TEST_ITERATION_COUNT; test_n++) {
 	auto pair = Utils::generate_text_and_pattern(TEXT_LENGTH, PATTERN, POSITION);
 	auto start = std::chrono::high_resolution_clock::now();
 	Fullscan::found(pair.second, pair.first);
@@ -36,17 +45,13 @@ int main() {
 	suffixscan_result += fp_ms.count();
   }
 
-  tabulate::Table tbl;
   tbl.add_row({
-				  "FULLSCAN",
-				  "PREFIXSCAN",
-				  "SUFFIXSCAN"
+				  std::to_string(fullscan_result / TEST_ITERATION_COUNT),
+				  std::to_string(prefixscan_result / TEST_ITERATION_COUNT),
+				  std::to_string(suffixscan_result / TEST_ITERATION_COUNT),
 			  });
-  tbl.add_row({
-				  std::to_string(fullscan_result / 1000),
-				  std::to_string(prefixscan_result / 1000),
-				  std::to_string(suffixscan_result / 1000),
-			  });
+
+
   tabulate::MarkdownExporter exporter;
 
   std::cout << "## O(n ^ 2)" << std::endl;
