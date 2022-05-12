@@ -11,6 +11,7 @@
 template<typename T>
 class FactorArray : public Array<T> {
  public:
+  FactorArray();
   explicit FactorArray(int factor);
 
   T get(int index) override;
@@ -27,14 +28,19 @@ class FactorArray : public Array<T> {
   T * _array;
 };
 
-
+template<typename T>
+FactorArray<T>::FactorArray() :
+	_capacity(10),
+	_length(0),
+	_array(new T[_capacity]),
+	_factor(10) { }
 
 template<typename T>
 FactorArray<T>::FactorArray(int factor) :
 	_capacity(10),
 	_length(0),
-	_array(new int[10]),
-	_factor(factor) {}
+	_array(new T[_capacity]),
+	_factor(factor) { }
 
 template<typename T>
 void FactorArray<T>::put(T item) {
@@ -46,7 +52,7 @@ void FactorArray<T>::put(T item) {
 template<typename T>
 void FactorArray<T>::resize() {
   _capacity *= _factor;
-  auto new_array = new int[_capacity];
+  auto new_array = new T[_capacity];
   std::memcpy(new_array, _array, _length);
   delete[] _array;
   _array = nullptr;
@@ -65,7 +71,7 @@ void FactorArray<T>::put(int index, T item) {
 
 template<typename T>
 int FactorArray<T>::size() {
-  return _capacity;
+  return _length;
 }
 
 template<typename T>
@@ -73,5 +79,5 @@ void FactorArray<T>::clean() {
   delete[] _array;
   _array = nullptr;
   _capacity = 10;
-  _array = new int[10];
+  _array = new T[10];
 }

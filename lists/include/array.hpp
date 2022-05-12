@@ -13,6 +13,13 @@ class Array {
   virtual int size() = 0;
   virtual void clean() = 0;
 
+  bool contains(T item) {
+    for (int i = 0; i < size(); i++)
+      if (get(i) == item)
+		return true;
+	return false;
+  }
+
   bool is_empty() {
 	return size() == 0;
   }
