@@ -12,6 +12,7 @@
 #include <fstream>
 #include <random>
 #include <sstream>
+#include <iomanip>
 
 enum POSITION {
   START,
@@ -26,6 +27,9 @@ void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...)
 
 template<typename T>
 void print_array(T array[], size_t lenght, std::ostream &ostream);
+
+template<typename T>
+void print_container_array(Array<T> * array, std::ostream &ostream);
 
 template<typename T>
 std::string to_string(T t1);
@@ -94,6 +98,12 @@ template<typename SortImpl>
 void test_sorting_auto(const std::string &test_name, SortImpl *sort);
 
 void print_array(int array[], int start_idx, int end_idx, std::ostream &ostream);
+
+template <typename T>
+void print_matrix(T ** matrix, int length);
+
+template <typename T>
+void print_2d_array(T ** matrix, int height, int weight);
 
 void generate_file(const std::string &path, char separator, unsigned long N);
 
@@ -207,6 +217,30 @@ inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ost
   ostream << "]" << std::endl;
 }
 
+template <typename T>
+inline void Utils::print_matrix(T ** matrix, int length) {
+  std::cout << "Matrix:\n";
+  	for (int i = 0; i < length; i++) {
+  	  std::cout << "| ";
+	  for (int j = 0; j < length; j++) {
+		std::cout << std::setw(2) << matrix[i][j] << "  ";
+	  }
+	  std::cout << "|\n";
+	}
+}
+
+template <typename T>
+inline void Utils::print_2d_array(T ** matrix, int height, int weight) {
+  std::cout << "2D Array:\n";
+  for (int i = 0; i < height; i++) {
+	std::cout << "| ";
+	for (int j = 0; j < weight; j++) {
+	  std::cout << std::setw(2) << matrix[i][j] << "  ";
+	}
+	std::cout << "|\n";
+  }
+}
+
 template<typename T>
 inline void Utils::print_array(T array[], size_t lenght, std::ostream &ostream) {
   ostream << "Array [ ";
@@ -214,6 +248,15 @@ inline void Utils::print_array(T array[], size_t lenght, std::ostream &ostream) 
 	ostream << array[i] << ", ";
   ostream << "]" << std::endl;
 }
+
+template<typename T>
+inline void Utils::print_container_array(Array<T> * array, std::ostream &ostream) {
+  ostream << "Array [ ";
+  for (int i = 0; i < array->size(); i++)
+    ostream << array->get(i) << ", ";
+  ostream << "]" << std::endl;
+}
+
 template<typename T>
 inline bool Utils::check_array_sort(const T array[], size_t lenght) {
   for (int i = 1; i < lenght || (&array[i]) == nullptr; ++i)
@@ -440,7 +483,7 @@ inline std::pair<std::string, std::string> Utils::generate_text_and_pattern(int 
   std::stringstream ss_text;
   std::stringstream ss_pattern;
   for (int i = 0; i < text_length; i++)
-    ss_text << 'A';
+    ss_text << 'a';
 
   std::string text = ss_text.str();
   int pattern_length = pattern.length();

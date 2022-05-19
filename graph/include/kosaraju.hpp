@@ -16,12 +16,9 @@ class Kosaraju {
 	auto reverse_matrix = t_matrix();
 
 	Tarjan tarjan(reverse_matrix, array_length);
-	for (int i = 0; i < array_length; i++)
-	  Utils::print_array(array[i], array_length, std::cout);
-
+	Utils::print_matrix(array, array_length);
 	std::cout << "T MATRIX:\n";
-	for (int i = 0; i < array_length; i++)
-	  Utils::print_array(reverse_matrix[i], array_length, std::cout);
+	Utils::print_matrix(reverse_matrix, array_length);
 
 	auto &list = tarjan.vertex_indexes();
 	auto result = new FactorArray<FactorArray<int> * >(10);

@@ -1,3 +1,4 @@
-| FULLSCAN | PREFIXSCAN | SUFFIXSCAN |
-| :----    | :----      | :----      |
-| 0.082831 | 0.006054   | 0.006319   |
+##TEST
+| FULLSCAN | PREFIXSCAN | SUFFIXSCAN | AUTO     | KMP      |
+| :----    | :----      | :----      | :----    | :----    |
+| 0.745939 | 0.009624   | 0.009637   | 0.246853 | 0.095925 |

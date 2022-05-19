@@ -55,6 +55,7 @@ class Demucron {
 	return result;
   }
 
+ private:
   int **array;
   int array_length;
 };
