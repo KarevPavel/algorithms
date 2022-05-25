@@ -22,14 +22,22 @@ enum POSITION {
 
 namespace Utils {
 
+const static char *create_alphabet(char from, char to) {
+  char *result = new char[to - from + 1];
+  for (char ch = from, i = 0; ch <= to; ch++, i++)
+	result[i] = ch;
+  return result;
+}
+
+
 template<typename R, typename ...Args>
 void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...), Args &&...args);
 
 template<typename T>
 void print_array(T array[], size_t lenght, std::ostream &ostream);
 
-template<typename T>
-void print_container_array(Array<T> * array, std::ostream &ostream);
+template<typename Container>
+void print_container_array(Container * array, std::ostream &ostream);
 
 template<typename T>
 std::string to_string(T t1);
@@ -249,8 +257,8 @@ inline void Utils::print_array(T array[], size_t lenght, std::ostream &ostream) 
   ostream << "]" << std::endl;
 }
 
-template<typename T>
-inline void Utils::print_container_array(Array<T> * array, std::ostream &ostream) {
+template<typename Container>
+inline void Utils::print_container_array(Container * array, std::ostream &ostream) {
   ostream << "Array [ ";
   for (int i = 0; i < array->size(); i++)
     ostream << array->get(i) << ", ";

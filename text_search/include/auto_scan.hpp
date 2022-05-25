@@ -8,14 +8,7 @@
 
 #define a 97
 #define z 122
-const static char *create_alhpabet() {
-  char *result = new char[z - a + 1];
-  for (char ch = a, i = 0; ch <= z; ch++, i++)
-	result[i] = ch;
-  return result;
-}
-
-static const char *alphabet = create_alhpabet();
+static const char *alphabet = Utils::create_alphabet(a, z);
 
 class Auto {
  private:
