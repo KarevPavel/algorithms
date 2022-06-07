@@ -11,10 +11,6 @@
 class RLE {
  public:
 
-  static void compress(std::istream &istream, std::ostream &output) {
-
-
-  }
 
 
   static void compress(std::istream &istream, std::ostream &output) {

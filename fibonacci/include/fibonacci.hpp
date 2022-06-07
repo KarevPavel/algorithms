@@ -65,6 +65,7 @@ inline long long Fibonacci::matrix(long long N) {
   return m->current[0][0];
 }
 
+//O(N)
 long long Fibonacci::iterative(long long N) {
   long long f[N + 2];
   f[0] = 0;

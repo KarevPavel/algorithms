@@ -238,12 +238,12 @@ inline void Utils::print_matrix(T ** matrix, int length) {
 }
 
 template <typename T>
-inline void Utils::print_2d_array(T ** matrix, int height, int weight) {
+inline void Utils::print_2d_array(T ** matrix, int columns, int rows) {
   std::cout << "2D Array:\n";
-  for (int i = 0; i < height; i++) {
+  for (int i = 0; i < rows; i++) {
 	std::cout << "| ";
-	for (int j = 0; j < weight; j++) {
-	  std::cout << std::setw(2) << matrix[i][j] << "  ";
+	for (int j = 0; j < columns; j++) {
+	  std::cout << std::setw(2) << matrix[j][i] << "  ";
 	}
 	std::cout << "|\n";
   }
