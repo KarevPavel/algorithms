@@ -24,7 +24,8 @@ class FactorArray : public Array<T> {
  private:
   size_t _capacity;
   size_t _length;
-  size_t _factor;
+
+  double _factor;
   T * _array;
 };
 
@@ -33,7 +34,7 @@ FactorArray<T>::FactorArray() :
 	_capacity(10),
 	_length(0),
 	_array(new T[_capacity]),
-	_factor(10) { }
+	_factor(10.) { }
 
 template<typename T>
 FactorArray<T>::FactorArray(int factor) :

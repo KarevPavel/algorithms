@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <iostream>
+
 template <typename T>
 class Array {
  public:
@@ -12,6 +14,13 @@ class Array {
   virtual void put(int index, T item) = 0;
   virtual int size() = 0;
   virtual void clean() = 0;
+
+  T find(T item) {
+	for (int i = 0; i < size(); i++)
+	  if (get(i) == item)
+		return get(i);
+	return nullptr;
+  }
 
   bool contains(T item) {
     for (int i = 0; i < size(); i++)

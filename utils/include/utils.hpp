@@ -60,6 +60,9 @@ void run_with_timeout(TF &f, TDuration timeout, TArgs &&... args);
 template<typename T>
 void array_swap(T array[], int a, int b);
 
+template<typename T>
+void shift_array(T array[], int, int);
+
 void shift_array(int array[], int a, int b);
 
 template<typename T>
@@ -207,15 +210,20 @@ inline void Utils::run_with_timeout(TF &f, TDuration timeout, TArgs &&... args) 
 
 template<typename T>
 inline void Utils::array_swap(T array[], int a, int b) {
-  int x = array[a];
+  T x = array[a];
   array[a] = array[b];
   array[b] = x;
 }
 
-inline void Utils::shift_array(int array[], int a, int b) {
-  for (int i = b; i > a; i--) {
+template<typename T>
+inline void Utils::shift_array(T array[], int a, int b) {
+  for (int i = b; i > a; i--)
 	array[i] = array[i - 1];
-  }
+}
+
+inline void Utils::shift_array(int array[], int a, int b) {
+  for (int i = b; i > a; i--)
+	array[i] = array[i - 1];
 }
 
 inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ostream &ostream) {
@@ -250,9 +258,9 @@ inline void Utils::print_2d_array(T ** matrix, int columns, int rows) {
 }
 
 template<typename T>
-inline void Utils::print_array(T array[], size_t lenght, std::ostream &ostream) {
+inline void Utils::print_array(T array[], size_t length, std::ostream &ostream) {
   ostream << "Array [ ";
-  for (int i = 0; i < lenght; ++i)
+  for (int i = 0; i < length; ++i)
 	ostream << array[i] << ", ";
   ostream << "]" << std::endl;
 }
