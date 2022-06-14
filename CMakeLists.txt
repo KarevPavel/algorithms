@@ -22,5 +22,4 @@ add_subdirectory(graph)
 add_subdirectory(text_search)
 add_subdirectory(stack)
 add_subdirectory(compression)
-
 add_subdirectory(dynamic_prog)

@@ -8,7 +8,8 @@
 using ull = unsigned long long;
 using bfi = boost::multiprecision::int1024_t;
 
-int collatz(int n) {
+bfi collatz(const bfi& n) {
+  std::cout << "\tN:" << n << std::endl;
   if (n == 1)
 	return 1;
   else if (n % 2 == 0)
@@ -18,7 +19,14 @@ int collatz(int n) {
 }
 
 int main() {
-  int number = 3;
-  int result = number;
-  while (collatz(number++) == 1);
+  std::cout << sizeof(bfi) * 93571393692802302 << std::endl;
+  std::cout << 93571393692802302 / std::numeric_limits<int>::max() << std::endl;
+
+  /*bfi number = 93571393692802302;
+  bfi result = collatz(number++);
+  while(result == 1) {
+    std::cout << "NUMBER:" << number + 1 << std::endl;
+	result = collatz(number++);
+  }
+   */
 }
