@@ -4,29 +4,34 @@
 
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/math/special_functions/pow.hpp>
+#include <chrono>
 
-using ull = unsigned long long;
 using bfi = boost::multiprecision::int1024_t;
 
 bfi collatz(const bfi& n) {
-  std::cout << "\tN:" << n << std::endl;
-  if (n == 1)
+  std::cout << n << ", ";
+  if (n == 4)
 	return 1;
-  else if (n % 2 == 0)
+  else if (!(n & 1))
 	return collatz(n / 2);
   else
 	return collatz(3 * n + 1);
 }
 
 int main() {
-  std::cout << sizeof(bfi) * 93571393692802302 << std::endl;
-  std::cout << 93571393692802302 / std::numeric_limits<int>::max() << std::endl;
+  bfi number = 93571393692802302;
+  int calculated = 1;
+  double sum_time_left = 0;
+  auto start = std::chrono::steady_clock::now();
+  do {
+    std::cout << " ]" << std::endl;
+	auto end = std::chrono::steady_clock::now();
+	std::chrono::duration<double, std::milli> fp_ms = end - start;
+	sum_time_left += fp_ms.count();
+	std::cout << "AVERAGE: " << (sum_time_left / calculated++) << " INIT NUMBER:" << number + 1 << " [";
+	start = std::chrono::steady_clock::now();
+  } while (collatz(number++) == 1);
 
-  /*bfi number = 93571393692802302;
-  bfi result = collatz(number++);
-  while(result == 1) {
-    std::cout << "NUMBER:" << number + 1 << std::endl;
-	result = collatz(number++);
-  }
-   */
+
+  std::cout << "EXIT LOOP ON NUMBER:" << number - 1 << std::endl;
 }

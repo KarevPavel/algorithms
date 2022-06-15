@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cmath>
+#include <iostream>
 
 #define PHI 1.61803398874989484820
 
