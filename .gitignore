@@ -22,7 +22,8 @@ build
 # Fortran module files
 *.mod
 *.smod
-
+CMakeFiles
+CmakeCache.txt
 # Compiled Static libraries
 *.lai
 *.la

@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.17)
 project(algorithms)
 
-add_subdirectory(lib/tabulate)
+#find_package(Boost REQUIRED COMPONENTS system)
 
-add_subdirectory(3n+1)
+add_subdirectory(lib/tabulate)
+#add_subdirectory(lib/boost)
+
+##now work on win
+#add_subdirectory(3n+1)
 add_subdirectory(lucky-ticket)
 add_subdirectory(lists)
 add_subdirectory(harry-potter)
