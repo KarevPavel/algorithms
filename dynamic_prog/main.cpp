@@ -6,7 +6,7 @@
 #include <string>
 #include <cstring>
 #include <iomanip>
-#include <shed.hpp>
+#include "pea.hpp"
 #include "digital_fir.hpp"
 #include "_58.hpp"
 #include "islands.hpp"
@@ -29,14 +29,18 @@ int main() {
   "1 0 1 1"};
   std::cout << islands_count(cin);*/
 
-  std::istringstream cin2{
+  /*std::istringstream cin2{
 	  "4 3\n"
 	  "0 0 0 0\n"
       "0 1 0 0\n"
 	  "1 0 0 0\n"
   };
 
-  std::cout << shed_square(cin2) << std::endl;
+  std::cout << shed_square(cin2) << std::endl;*/
+
+  std::istringstream cin { "2/100+3/100" };
+  std::cout << pea(cin);
+
 }
 
 
