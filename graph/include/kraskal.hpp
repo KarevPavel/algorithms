@@ -8,24 +8,7 @@
 #include "vector_array.hpp"
 #include <iostream>
 #include "bubble_sort.hpp"
-
-class Edge {
- public:
-  Edge(int v1, int v2, int weight) : v1(v1), v2(v2), weight(weight) {}
- public:
-  int v1;
-  int v2;
-  int weight;
-
-  bool operator<(const Edge &rhs) const {
-	return weight < rhs.weight;
-  }
-
-  bool operator>(const Edge &rhs) const {
-	return weight > rhs.weight;
-  }
-};
-
+#include "edge.hpp"
 
 class Kraskal {
  public:

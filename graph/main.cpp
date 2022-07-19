@@ -6,6 +6,7 @@
 #include <demucron.hpp>
 #include <kosaraju.hpp>
 #include <kraskal.hpp>
+#include <dijkstra.hpp>
 
 int main() {
   /*auto *arr = new int *[6]{
@@ -52,6 +53,7 @@ int main() {
 
 
   //matrix_3.png
+  /*
   auto *matrix3 = new int *[8]{
 	  new int[8]{0, 3, 5, 0, 0, 0, 0, 0,},
 	  new int[8]{3, 0, 6, 4, 10, 0, 0, 2,},
@@ -67,5 +69,29 @@ int main() {
   Kraskal kraskal{matrix3, 8};
   auto t = kraskal.skeleton();
   for (int i = 0; i< t.size(); i++)
-    std::cout << "Edge " << t.get(i)->v1 << " - " << t.get(i)->v2 << std::endl;
+	std::cout << "Edge " << t.get(i)->v1 << " - " << t.get(i)->v2 << std::endl;
+  */
+
+  //matrix_4.png
+  auto *matrix4 = new int *[7]{
+	  new int[7]{0, 2, 3, 6, 0, 0, 0,},
+	  new int[7]{2, 0, 4, 0, 9, 0, 0,},
+	  new int[7]{3, 4, 0, 1, 7, 6, 0,},
+	  new int[7]{6, 0, 1, 0, 0, 4, 0,},
+	  new int[7]{0, 9, 7, 0, 0, 1, 5,},
+	  new int[7]{0, 0, 6, 4, 1, 0, 8,},
+	  new int[7]{0, 0, 0, 0, 5, 8, 0,},
+
+  };
+
+  Dijkstra dijkstra(matrix4, 7);
+  dijkstra.min_path(0);
+
+
+  /* for (int i = 0; i< t.size(); i++)
+	 std::cout << "Edge " << t.get(i)->v1 << " - " << t.get(i)->v2 << std::endl;*/
+
+
+
+
 }
