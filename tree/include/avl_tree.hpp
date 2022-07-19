@@ -155,16 +155,18 @@ void AvlTree<T>::rebalance(AvlNode *node_parent, AvlNode *node) {
   rebalance(node, node->right());
   rebalance(node, node->left());
 
-  if (node->left()->depth() >= node->right()->depth()) {
-	if (!small_right_rotation(node_parent, node)) {
-	  small_left_rotation(node, node->left());
-	  small_right_rotation(node_parent, node);
+  if (node_parent != nullptr) {
+	if (node->left()->depth() >= node->right()->depth()) {
+	  if (!small_right_rotation(node_parent, node)) {
+		small_left_rotation(node, node->left());
+		small_right_rotation(node_parent, node);
+	  }
 	}
-  }
-  if (node->right()->depth() >= node->left()->depth()) {
-	if (!small_left_rotation(node_parent, node)) {
-	  small_right_rotation(node_parent, node);
-	  small_left_rotation(node, node->right());
+	if (node->right()->depth() >= node->left()->depth()) {
+	  if (!small_left_rotation(node_parent, node)) {
+		small_right_rotation(node_parent, node);
+		small_left_rotation(node, node->right());
+	  }
 	}
   }
 }

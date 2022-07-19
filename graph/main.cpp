@@ -81,7 +81,6 @@ int main() {
 	  new int[7]{0, 9, 7, 0, 0, 1, 5,},
 	  new int[7]{0, 0, 6, 4, 1, 0, 8,},
 	  new int[7]{0, 0, 0, 0, 5, 8, 0,},
-
   };
 
   Dijkstra dijkstra(matrix4, 7);
