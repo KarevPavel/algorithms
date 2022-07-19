@@ -18,6 +18,8 @@ class FactorArray : public Array<T> {
   void put(T item) override;
   void put(int index, T item) override;
   int size() override;
+  void sort(ArraySort<T> *) override;
+
   void resize();
   void clean();
 
@@ -44,6 +46,12 @@ FactorArray<T>::FactorArray(int factor) :
 	_factor(factor) { }
 
 template<typename T>
+void FactorArray<T>::sort(ArraySort<T> * algo) {
+  algo->sort(_array, _length);
+}
+
+
+template<typename T>
 void FactorArray<T>::put(T item) {
   if (_length == _capacity)
 	resize();
@@ -54,7 +62,7 @@ template<typename T>
 void FactorArray<T>::resize() {
   _capacity *= _factor;
   auto new_array = new T[_capacity];
-  std::memcpy(new_array, _array, _length);
+  std::memcpy(new_array, _array, sizeof(T) * _length);
   delete[] _array;
   _array = nullptr;
   _array = new_array;

@@ -3,6 +3,7 @@
 //
 
 #pragma once
+
 #include "tree.hpp"
 
 template<unsigned int tuple_size, typename T>

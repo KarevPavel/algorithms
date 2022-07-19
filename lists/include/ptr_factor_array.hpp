@@ -25,8 +25,6 @@ class PtrFactorArray {
   void clean();
   T * find(T * item);
 
-
-
  private:
   size_t _capacity;
   size_t _length;
@@ -82,7 +80,7 @@ template<typename T>
 void PtrFactorArray<T>::resize() {
   _capacity *= _factor;
   auto new_array = new T * [_capacity];
-  std::memcpy(new_array, _array, _length);
+  std::memcpy(new_array, _array, sizeof(T) * _length);
   delete[] _array;
   _array = nullptr;
   _array = new_array;

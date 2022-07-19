@@ -12,9 +12,10 @@
 #include "array_sort.hpp"
 #include <stdio.h>
 
+template <typename T>
 class FileSort {
  public:
-  FileSort(ArraySort *array_sort,
+  FileSort(ArraySort<T> *array_sort,
 		   std::string &output_dir);
   ~FileSort();
 
@@ -31,14 +32,16 @@ class FileSort {
 
   void create_result(int file_counter);
 
-  ArraySort *_sort;
+  ArraySort<T> *_sort;
   const std::string &sort_result_path;
 };
 
-FileSort::FileSort(ArraySort *array_sort,
+template <typename T>
+FileSort<T>::FileSort(ArraySort<T> *array_sort,
 				   std::string &sort_result_path) : sort_result_path(sort_result_path), _sort(array_sort) {}
 
-FileSort::~FileSort() {
+template <typename T>
+FileSort<T>::~FileSort() {
   delete this->_sort;
 }
 
@@ -49,7 +52,8 @@ FileSort::~FileSort() {
  * Для того, что бы при слиянии файлов не превысить размер этот размер
  * @return Возвращает количество созданных файлов
  */
-int FileSort::split_file(const std::string &file_path, int batch_size) {
+template <typename T>
+int FileSort<T>::split_file(const std::string &file_path, int batch_size) {
   std::ifstream ifstream;
   std::ofstream ofstream;
 
@@ -94,7 +98,8 @@ int FileSort::split_file(const std::string &file_path, int batch_size) {
   return file_name_counter;
 }
 
-int *FileSort::merge_files(int batch_size,
+template <typename T>
+int *FileSort<T>::merge_files(int batch_size,
 						   const std::string &path_a,
 						   const std::string &path_b) {
 
@@ -150,8 +155,8 @@ int *FileSort::merge_files(int batch_size,
 
   return merge_result;
 }
-
-void FileSort::file_sort(std::string in_file_path,
+template <typename T>
+void FileSort<T>::file_sort(std::string in_file_path,
 						 int batch_size) {
 
   int file_name_counter = split_file(in_file_path, batch_size);
@@ -175,8 +180,8 @@ void FileSort::file_sort(std::string in_file_path,
 
   create_result(file_name_counter);
 }
-
-void FileSort::create_result(int file_counter) {
+template <typename T>
+void FileSort<T>::create_result(int file_counter) {
   std::ifstream ifstream;
   std::ofstream ofstream;
 

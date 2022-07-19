@@ -8,13 +8,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class InsertionSort: public ArraySort {
+template <typename T>
+class InsertionSort: public ArraySort<T> {
  public:
   ~InsertionSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void InsertionSort::sort(long *array, size_t length) {
+template <typename T>
+void InsertionSort<T>::sort(T *array, size_t length) {
   for (int i = 0; i < length; i++)
 	for (int j = i; j > 0 && array[j] < array[j - 1]; j--)
 	  Utils::array_swap(array, j, j - 1);

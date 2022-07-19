@@ -8,8 +8,9 @@
 #include <string>
 #include <fstream>
 
+template <typename T>
 class ArraySort {
  public:
   virtual ~ArraySort() = default;
-  virtual void sort(long *array, size_t length) = 0;
+  virtual void sort(T *array, size_t length) = 0;
 };

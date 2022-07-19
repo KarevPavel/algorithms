@@ -8,13 +8,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class OptimizedBubbleSort : public ArraySort {
+template <typename T>
+class OptimizedBubbleSort : public ArraySort<T> {
  public:
   ~OptimizedBubbleSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void OptimizedBubbleSort::sort(long *array, size_t length) {
+template <typename T>
+void OptimizedBubbleSort<T>::sort(T *array, size_t length) {
   for (int i = 0; i < length; i++) {
     bool is_changed = false;
 	for (int j = 0; j < length - i - 1; j++)

@@ -3,4 +3,4 @@ project(compression)
 set(CMAKE_CXX_STANDARD 14)
 
 add_subdirectory(rle)
-add_subdirectory(huffman)
+#add_subdirectory(huffman)

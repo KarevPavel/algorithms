@@ -11,7 +11,6 @@
 template<typename T>
 class SingleArray : public Array<T> {
  public:
-
   explicit SingleArray() :
 	  _size(0),
 	  array(new int[0]) {}

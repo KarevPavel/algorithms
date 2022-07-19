@@ -16,8 +16,10 @@ class VectorArray : public Array<T> {
   void put(T item) override;
   void put(int index, T item) override;
   int size() override;
+  void sort(ArraySort<T> * algo) override;
   void resize();
   void clean();
+
 
  private:
   size_t _capacity;
@@ -30,7 +32,7 @@ template<typename T>
 VectorArray<T>::VectorArray(int buffer_size) :
 	_capacity(buffer_size),
 	_length(0),
-	_array(new int[buffer_size]),
+	_array(new T[buffer_size]),
 	_buffer_size(buffer_size) {}
 
 template<typename T>
@@ -43,8 +45,8 @@ void VectorArray<T>::put(T item) {
 template<typename T>
 void VectorArray<T>::resize() {
   _capacity += _buffer_size;
-  auto new_array = new int[_capacity];
-  std::memcpy(new_array, _array, _length);
+  auto new_array = new T[_capacity];
+  std::memcpy(new_array, _array, sizeof(T) * _length);
   delete[] _array;
   _array = nullptr;
   _array = new_array;
@@ -70,5 +72,9 @@ void VectorArray<T>::clean() {
   delete[] _array;
   _array = nullptr;
   _capacity = _buffer_size;
-  _array = new int[_buffer_size];
+  _array = new T[_buffer_size];
+}
+template<typename T>
+void VectorArray<T>::sort(ArraySort<T> * algo) {
+  algo->sort(_array, _length);
 }

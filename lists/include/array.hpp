@@ -5,6 +5,7 @@
 #pragma once
 
 #include <iostream>
+#include <array_sort.hpp>
 
 template <typename T>
 class Array {
@@ -14,6 +15,10 @@ class Array {
   virtual void put(int index, T item) = 0;
   virtual int size() = 0;
   virtual void clean() = 0;
+
+  virtual void sort(ArraySort<T> *) {
+
+  }
 
   T find(T item) {
 	for (int i = 0; i < size(); i++)

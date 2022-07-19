@@ -8,7 +8,7 @@
 #include <kraskal.hpp>
 
 int main() {
-  auto *arr = new int *[6]{
+  /*auto *arr = new int *[6]{
 	  new int[6]{0, 0, 0, 0, 0, 1},
 	  new int[6]{1, 0, 0, 1, 1, 1},
 	  new int[6]{0, 1, 0, 0, 1, 0},
@@ -26,12 +26,12 @@ int main() {
 		std::cout << "\tVERTEX INDX: " << result[lvl]->get(idx) << std::endl;
 	}
   }
-
+*/
 
   //OUTPUT
   //COMPONENT №1 [ 0 4 ]
   //COMPONENT №2 [ 2 3 7 6 ]
-  auto *arr3 = new int *[8]{
+  /*auto *arr3 = new int *[8]{
 	  new int[8]{0, 1, 0, 0, 0, 0, 0, 0},
 	  new int[8]{0, 0, 1, 0, 1, 1, 0, 0},
 	  new int[8]{0, 0, 0, 1, 0, 0, 0, 0},
@@ -48,8 +48,10 @@ int main() {
 	for (int j = 0; j < kosaraju_result.get(i)->size(); j++)
 	  std::cout << kosaraju_result.get(i)->get(j) << " ";
 	std::cout << "]" << std::endl;
-  }
+  }*/
 
+
+  //matrix_3.png
   auto *matrix3 = new int *[8]{
 	  new int[8]{0, 3, 5, 0, 0, 0, 0, 0,},
 	  new int[8]{3, 0, 6, 4, 10, 0, 0, 2,},
@@ -63,6 +65,7 @@ int main() {
 
   Utils::print_matrix(matrix3, 8);
   Kraskal kraskal{matrix3, 8};
-  kraskal.skeleton();
-
+  auto t = kraskal.skeleton();
+  for (int i = 0; i< t.size(); i++)
+    std::cout << "Edge " << t.get(i)->v1 << " - " << t.get(i)->v2 << std::endl;
 }

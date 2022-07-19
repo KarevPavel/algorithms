@@ -8,13 +8,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class SelectionSort : public ArraySort {
+template <typename T>
+class SelectionSort : public ArraySort<T> {
  public:
   ~SelectionSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void SelectionSort::sort(long *array, size_t length) {
+template <typename T>
+void SelectionSort<T>::sort(T *array, size_t length) {
   for (int i = length; i > 0; i--) {
 	int max_element_idx = i;
 	for (int j = 0; j < i; j++)

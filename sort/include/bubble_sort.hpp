@@ -8,17 +8,24 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class BubbleSort : public ArraySort {
+template <typename T>
+class BubbleSort : public ArraySort<T> {
  public:
   ~BubbleSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void BubbleSort::sort(long *array, size_t length) {
+template <typename T>
+void BubbleSort<T>::sort(T *array, size_t length) {
   for (int i = 0; i < length; i++)
 	for (int j = 0; j < length - i - 1; j++)
-	  if (array[j] > array[j + 1])
-		Utils::array_swap(array, j, j + 1);
+	  if (!std::is_pointer<T>::value) {
+		if (array[j] > array[j + 1])
+		  Utils::array_swap(array, j, j + 1);
+	  } else {
+		if (*array[j] > *array[j + 1])
+		  Utils::array_swap(array, j, j + 1);
+	  }
 }
 
 

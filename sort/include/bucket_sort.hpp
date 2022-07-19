@@ -8,13 +8,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class BucketSort : public ArraySort {
+template <typename T>
+class BucketSort : public ArraySort<T> {
  public:
   ~BucketSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void BucketSort::sort(long *array, size_t length) {
+template <typename T>
+void BucketSort<T>::sort(T *array, size_t length) {
   auto bucket = new std::vector<int>[length]();
 
   int max = Utils::find_max(array, length);

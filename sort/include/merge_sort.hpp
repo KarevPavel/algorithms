@@ -7,22 +7,25 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class MergeSort : public ArraySort {
+template <typename T>
+class MergeSort : public ArraySort<T> {
  public:
   ~MergeSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
  private:
-  void mergeSort(long array[], int l, int r);
-  void merge(long array[], int l, int m, int r);
+  void mergeSort(T array[], int l, int r);
+  void merge(T array[], int l, int m, int r);
 };
 
-void MergeSort::sort(long *array, size_t length) {
+template <typename T>
+void MergeSort<T>::sort(T *array, size_t length) {
   if (length < 1)
 	throw std::runtime_error("length cannot be less then '1'");
   mergeSort(array, 0, length - 1);
 }
 
-void MergeSort::merge(long arr[], int l, int m, int r) {
+template <typename T>
+void MergeSort<T>::merge(T arr[], int l, int m, int r) {
   int i, j, k;
   int n1 = m - l + 1;
   int n2 = r - m;
@@ -54,7 +57,8 @@ void MergeSort::merge(long arr[], int l, int m, int r) {
   delete [] L;
 }
 
-void MergeSort::mergeSort(long array[], int l, int r) {
+template <typename T>
+void MergeSort<T>::mergeSort(T array[], int l, int r) {
   if (l < r) {
 	int m = l + (r - l) / 2;
 	mergeSort(array, l, m);

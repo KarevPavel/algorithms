@@ -8,16 +8,18 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class HeapSort : public ArraySort {
+template <typename T>
+class HeapSort : public ArraySort<T> {
  public:
   ~HeapSort() override = default;
 
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
  private:
-  void max_to_root(long array[], int root, size_t size_t);
+  void max_to_root(T array[], int root, size_t size_t);
 };
 
-void HeapSort::sort(long *array, size_t length) {
+template <typename T>
+void HeapSort<T>::sort(T *array, size_t length) {
   for (int root = length / 2 - 1; root >= 0; root--)
 	max_to_root(array, root, length);
 
@@ -28,7 +30,8 @@ void HeapSort::sort(long *array, size_t length) {
 
 }
 
-void HeapSort::max_to_root(long array[], int root, size_t length) {
+template <typename T>
+void HeapSort<T>::max_to_root(T array[], int root, size_t length) {
   int left = 2 * root + 1;
   int rigth = 2 * root + 2;
   int x = root;

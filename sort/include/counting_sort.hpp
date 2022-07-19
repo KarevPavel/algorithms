@@ -8,13 +8,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class CountingSort : public ArraySort {
+template <typename T>
+class CountingSort : public ArraySort<T> {
  public:
   ~CountingSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void CountingSort::sort(long *array, size_t length) {
+template <typename T>
+void CountingSort<T>::sort(T *array, size_t length) {
   long max = Utils::find_max(array, length) + 1;
   long *counting = new long[max] { 0 };
   for (long i = 0; i < length; i++)

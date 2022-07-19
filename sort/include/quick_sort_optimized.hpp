@@ -5,21 +5,24 @@
 #include "utils.hpp"
 #include "quick_sort_original.hpp"
 
-class OptimizedQuickSort: public OriginalQuickSort {
+template <typename T>
+class OptimizedQuickSort: public OriginalQuickSort<T> {
  public:
   ~OptimizedQuickSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
  private:
-  void split(long array[], int start_idx, int last_idx);
+  void split(T array[], int start_idx, int last_idx);
 };
 
-void OptimizedQuickSort::sort(long *array, size_t length) {
+template <typename T>
+void OptimizedQuickSort<T>::sort(T *array, size_t length) {
   split(array, 0, length - 1);
 }
 
-void OptimizedQuickSort::split(long array[], int start_idx, int last_idx) {
+template <typename T>
+void OptimizedQuickSort<T>::split(T array[], int start_idx, int last_idx) {
     int a = start_idx - 1;
-    int pivot = array[last_idx];
+    T pivot = array[last_idx];
     for (int m = start_idx; m <= last_idx; m++)
       if (array[m] <= pivot)
         Utils::array_swap(array, ++a, m);

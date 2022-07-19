@@ -10,13 +10,15 @@
 
 #define TEN 10
 
-class RadixSort : public ArraySort {
+template <typename T>
+class RadixSort : public ArraySort<T> {
  public:
   ~RadixSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void RadixSort::sort(long *array, size_t length) {
+template <typename T>
+void RadixSort<T>::sort(T *array, size_t length) {
   long max_number = Utils::find_max(array, length);
   long  bit_depth = std::to_string(max_number).length();
   for (long i = 1; i <= bit_depth; i++) {

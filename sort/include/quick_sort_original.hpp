@@ -7,22 +7,25 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-class OriginalQuickSort : public ArraySort {
+template <typename T>
+class OriginalQuickSort : public ArraySort<T> {
  public:
   ~OriginalQuickSort() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
  private:
-  void split(long array[], int start_idx, int end_idx);
+  void split(T array[], int start_idx, int end_idx);
 };
 
-void OriginalQuickSort::sort(long *array, size_t length) {
+template <typename T>
+void OriginalQuickSort<T>::sort(T *array, size_t length) {
   split(array, 0, length - 1);
 }
 
-void OriginalQuickSort::split(long array[], int start_idx, int end_idx) {
+template <typename T>
+void OriginalQuickSort<T>::split(T array[], int start_idx, int end_idx) {
   int left = start_idx;
   int right = end_idx;
-  int pivot = array[right];
+  T pivot = array[right];
   while (right > left) {
 	while (left < end_idx && array[left] <= pivot)
 	  left++;

@@ -3,6 +3,7 @@
 //
 #pragma once
 
+#include <cstdlib>
 #include "tree.hpp"
 
 template<typename T>

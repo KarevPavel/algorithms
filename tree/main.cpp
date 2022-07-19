@@ -26,23 +26,42 @@ int main() {
   random_array_tree_map["BSTree"] = new BSTree<int>();
   auto *bs_tree = new BSTree<int>();
 
-  auto random_array_table = generate_table(bs_tree,
+  auto *avl_tree = new AvlTree<int>();
+  auto avl_tree_random_array = generate_table(avl_tree,
 										   tests,
 										   Utils::random_array<int>,
 										   Utils::test_tree_insert_random_array<Tree<int>>);
 
-  auto asc_array_table = generate_table(bs_tree,
+  auto avl_tree_asc_array = generate_table(avl_tree,
+										tests,
+										Utils::asc_array<int>,
+										Utils::test_tree_insert_asc_array<Tree<int>>);
+
+
+  auto bs_tree_random_array = generate_table(bs_tree,
+										   tests,
+										   Utils::random_array<int>,
+										   Utils::test_tree_insert_random_array<Tree<int>>);
+
+  auto bs_tree_asc_array = generate_table(bs_tree,
 										tests,
 										Utils::asc_array<int>,
 										Utils::test_tree_insert_asc_array<Tree<int>>);
 
   tabulate::MarkdownExporter exporter;
+  std::cout << "BSTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
-  std::cout << exporter.dump(asc_array_table) << std::endl;
+  std::cout << exporter.dump(bs_tree_asc_array) << std::endl;
 
   std::cout << std::endl << std::endl << "## RANDOM ARRAY" << std::endl;
-  std::cout << exporter.dump(random_array_table) << std::endl;
+  std::cout << exporter.dump(bs_tree_random_array) << std::endl;
 
+  std::cout << "AVLTree" << std::endl;
+  std::cout << "## ASC ARRAY" << std::endl;
+  std::cout << exporter.dump(avl_tree_asc_array) << std::endl;
+
+  std::cout << std::endl << std::endl << "## RANDOM ARRAY" << std::endl;
+  std::cout << exporter.dump(avl_tree_random_array) << std::endl;
   return 0;
 }
 

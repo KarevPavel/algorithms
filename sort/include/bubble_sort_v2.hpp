@@ -9,14 +9,15 @@
 #include "array_sort.hpp"
 #include "utils.hpp"
 
-
-class BubbleSortV2 : public ArraySort {
+template <typename T>
+class BubbleSortV2 : public ArraySort<T> {
  public:
   ~BubbleSortV2() override = default;
-  void sort(long *array, size_t length) override;
+  void sort(T *array, size_t length) override;
 };
 
-void BubbleSortV2::sort(long *array, size_t length) {
+template <typename T>
+void BubbleSortV2<T>::sort(T *array, size_t length) {
 
   long* end = array + length;
   long* curr = array + 1;
