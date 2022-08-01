@@ -158,7 +158,7 @@ void PrefixTreeNode<V>::value(V *value) {
 template<typename V>
 void PrefixTree<V>::del(const std::string& key) {
   auto * node = find(key);
-  //Самое простое удаление, присваиваем значению null
+  //Самое простое удаление, присваиваем значение null
   node->value(nullptr);
 }
 

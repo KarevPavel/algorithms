@@ -9,6 +9,7 @@ build
 *.lo
 *.o
 *.obj
+**\generated_numbers.txt
 
 # Precompiled Headers
 *.gch
@@ -33,3 +34,4 @@ CmakeCache.txt
 # Executables
 *.exe
 *.app
+/file/tmp/*

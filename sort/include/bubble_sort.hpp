@@ -23,8 +23,13 @@ void BubbleSort<T>::sort(T *array, size_t length) {
 		if (array[j] > array[j + 1])
 		  Utils::array_swap(array, j, j + 1);
 	  } else {
-		if (*array[j] > *array[j + 1])
-		  Utils::array_swap(array, j, j + 1);
+		if (!std::is_pointer<T>::value) {
+		  if (array[j] > array[j + 1])
+			Utils::array_swap(array, j, j + 1);
+		} else {
+		  if (array[j] > array[j + 1])
+			Utils::array_swap(array, j, j + 1);
+		}
 	  }
 }
 

@@ -29,7 +29,6 @@ const static char *create_alphabet(char from, char to) {
   return result;
 }
 
-
 template<typename R, typename ...Args>
 void print_exec_time_and_result(const std::string &test_name, R (*func)(Args...), Args &&...args);
 
@@ -37,7 +36,7 @@ template<typename T>
 void print_array(T array[], size_t lenght, std::ostream &ostream);
 
 template<typename Container>
-void print_container_array(Container * array, std::ostream &ostream);
+void print_container_array(Container *array, std::ostream &ostream);
 
 template<typename T>
 std::string to_string(T t1);
@@ -80,8 +79,14 @@ void test_sorting(const std::string &test_name, int element_count, SortImpl *sor
 template<typename FileSort>
 std::string test_file_sorting_for_table(const std::string &input_file, int batch_size, FileSort *sort);
 
+template<typename FileSort>
+std::string test_file_sorting_for_table(const std::string &input_file, FileSort *sort);
+
+
 template<typename SortImpl>
 std::string test_sorting_for_table(int element_count, SortImpl *sort);
+
+std::string human_time_result(std::chrono::duration<double, std::milli>);
 
 template<typename Tree>
 std::string test_tree_insert_random_array(int *array, int element_count, Tree *tree);
@@ -94,7 +99,6 @@ std::string test_tree_search(int *array, int element_count, Tree *tree);
 
 template<typename Tree>
 std::string test_tree_delete(int *array, int element_count, Tree *tree);
-
 
 template<typename Map>
 std::string test_map_insert(int *array, int element_count, Map *map);
@@ -110,11 +114,11 @@ void test_sorting_auto(const std::string &test_name, SortImpl *sort);
 
 void print_array(int array[], int start_idx, int end_idx, std::ostream &ostream);
 
-template <typename T>
-void print_matrix(T ** matrix, int length);
+template<typename T>
+void print_matrix(T **matrix, int length);
 
-template <typename T>
-void print_2d_array(T ** matrix, int height, int weight);
+template<typename T>
+void print_2d_array(T **matrix, int height, int weight);
 
 void generate_file(const std::string &path, char separator, unsigned long N);
 
@@ -130,7 +134,7 @@ T *array_part(T *array, int start_index, int end_index);
 template<typename T>
 void overwrite_file(const std::string &file, T *array, int size);
 
-std::pair<std::string, std::string> generate_text_and_pattern(int, const std::string&, POSITION);
+std::pair<std::string, std::string> generate_text_and_pattern(int, const std::string &, POSITION);
 }
 
 template<typename T>
@@ -233,20 +237,20 @@ inline void Utils::print_array(int array[], int start_idx, int end_idx, std::ost
   ostream << "]" << std::endl;
 }
 
-template <typename T>
-inline void Utils::print_matrix(T ** matrix, int length) {
+template<typename T>
+inline void Utils::print_matrix(T **matrix, int length) {
   std::cout << "Matrix:\n";
-  	for (int i = 0; i < length; i++) {
-  	  std::cout << "| ";
-	  for (int j = 0; j < length; j++) {
-		std::cout << std::setw(2) << matrix[i][j] << "  ";
-	  }
-	  std::cout << "|\n";
+  for (int i = 0; i < length; i++) {
+	std::cout << "| ";
+	for (int j = 0; j < length; j++) {
+	  std::cout << std::setw(2) << matrix[i][j] << "  ";
 	}
+	std::cout << "|\n";
+  }
 }
 
-template <typename T>
-inline void Utils::print_2d_array(T ** matrix, int columns, int rows) {
+template<typename T>
+inline void Utils::print_2d_array(T **matrix, int columns, int rows) {
   std::cout << "2D Array:\n";
   for (int i = 0; i < rows; i++) {
 	std::cout << "| ";
@@ -266,10 +270,10 @@ inline void Utils::print_array(T array[], size_t length, std::ostream &ostream) 
 }
 
 template<typename Container>
-inline void Utils::print_container_array(Container * array, std::ostream &ostream) {
+inline void Utils::print_container_array(Container *array, std::ostream &ostream) {
   ostream << "Array [ ";
   for (int i = 0; i < array->size(); i++)
-    ostream << array->get(i) << ", ";
+	ostream << array->get(i) << ", ";
   ostream << "]" << std::endl;
 }
 
@@ -334,8 +338,24 @@ inline std::string Utils::test_sorting_for_table(int element_count, SortImpl *so
   sort->sort(arr, element_count);
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
-  bool isOk = Utils::check_array_sort(arr, element_count);
-  return isOk ? std::to_string(fp_ms.count()) : "ERROR";
+  bool is_ok = Utils::check_array_sort(arr, element_count);
+  return is_ok ? human_time_result(fp_ms) : "ERROR";
+}
+
+std::string Utils::human_time_result(std::chrono::duration<double, std::milli> duration) {
+  std::stringstream result;
+  auto secs = std::chrono::duration_cast<std::chrono::seconds>(duration);
+  duration -= std::chrono::duration_cast<std::chrono::milliseconds>(secs);
+  auto mins = std::chrono::duration_cast<std::chrono::minutes>(secs);
+  secs -= std::chrono::duration_cast<std::chrono::seconds>(mins);
+  if (mins.count() > 0)
+	result << std::to_string(mins.count()) << "m ";
+  if (secs.count() > 0)
+	result << std::to_string(secs.count()) << "s ";
+  if (duration.count() > 0) {
+	result << std::setprecision(4) << duration.count() << "ms";
+  }
+  return result.str();
 }
 
 template<typename Tree>
@@ -430,12 +450,16 @@ inline void Utils::test_sorting_auto(const std::string &test_name, SortImpl *sor
 inline void Utils::generate_file(const std::string &path, char separator, unsigned long N) {
   std::ofstream ofstream;
   ofstream.open(path);
-  for (int i = 0; i < N; i++) {
-	if (i == 0)
-	  ofstream << random_number<unsigned short>(0, 65535);
-	else
-	  ofstream << separator << random_number<unsigned short>(0, 65535);
+  if (!ofstream.is_open())
+    throw std::runtime_error("File is not open!");
+
+  auto max = std::numeric_limits<unsigned short>::max();
+  ofstream << random_number<unsigned short>(0, max);
+  for (int i = 1; i < N; i++) {
+	ofstream << separator << random_number<unsigned short>(0, max);
+	ofstream.flush();
   }
+  ofstream.close();
 }
 
 template<typename T>
@@ -447,8 +471,8 @@ inline T Utils::random_number(T a, T b) {
 }
 
 template<typename T>
-inline T Utils::find_max(T *array, int length) {
-  int max = 0;
+inline T  Utils::find_max(T *array, int length) {
+  T max = array[0];
   for (int l = 0, r = length; l < r; l++, r--) {
 	if (max < array[l])
 	  max = array[l];
@@ -473,11 +497,9 @@ void Utils::overwrite_file(const std::string &file, T *array, int size) {
   ofstream.open(file);
   if (!ofstream)
 	throw std::runtime_error("Cannot open file! " + file);
-  for (int i = 0; i < size; i++)
-	if (i == 0)
-	  ofstream << array[i];
-	else
-	  ofstream << '\n' << array[i];
+  ofstream << array[0];
+  for (int i = 1; i < size; i++)
+	ofstream << std::endl << array[i];
 }
 
 template<typename FileSort>
@@ -486,20 +508,26 @@ inline std::string Utils::test_file_sorting_for_table(const std::string &input_f
   sort->file_sort(input_file, batch_size);
   auto end = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double, std::milli> fp_ms = end - start;
-  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-  auto in_sec = std::chrono::duration_cast<std::chrono::seconds>(end - start);
-  std::cout << "duration: " << duration.count() << " microseconds" << std::endl;
-  std::cout << "in_sec " << in_sec.count() << " seconds" << std::endl;
-  return std::to_string(fp_ms.count());
+  return human_time_result(fp_ms);
+}
+
+
+template<typename FileSort>
+inline std::string Utils::test_file_sorting_for_table(const std::string &input_file, FileSort *sort) {
+  auto start = std::chrono::high_resolution_clock::now();
+  sort->file_sort(input_file);
+  auto end = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::milli> fp_ms = end - start;
+  return human_time_result(fp_ms);
 }
 
 inline std::pair<std::string, std::string> Utils::generate_text_and_pattern(int text_length = 1024,
-																			const std::string& pattern = "@@@@@@",
+																			const std::string &pattern = "@@@@@@",
 																			POSITION position = POSITION::MID) {
   std::stringstream ss_text;
   std::stringstream ss_pattern;
   for (int i = 0; i < text_length; i++)
-    ss_text << 'a';
+	ss_text << 'a';
 
   std::string text = ss_text.str();
   int pattern_length = pattern.length();
@@ -508,10 +536,10 @@ inline std::pair<std::string, std::string> Utils::generate_text_and_pattern(int 
   if (position == POSITION::MID)
 	insert_pattern_pos = text_length / 2;
   else if (position == POSITION::END)
-    insert_pattern_pos = text_length - pattern_length;
+	insert_pattern_pos = text_length - pattern_length;
 
   for (int i = 0; i < pattern_length; i++)
-    text[insert_pattern_pos + i] = pattern[i];
+	text[insert_pattern_pos + i] = pattern[i];
 
   return std::make_pair(pattern, text);
 }

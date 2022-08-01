@@ -17,7 +17,7 @@ class BucketSort : public ArraySort<T> {
 
 template <typename T>
 void BucketSort<T>::sort(T *array, size_t length) {
-  auto bucket = new std::vector<int>[length]();
+  auto bucket = new std::vector<int>[length + 1]();
 
   int max = Utils::find_max(array, length);
 

@@ -4,20 +4,22 @@
 
 #include "utils.hpp"
 #include "file_path_config.hpp"
-#include "../sort/include/file_sort.hpp"
-#include "../sort/include/shell_sort.hpp"
-#include "../sort/include/quick_sort_optimized.hpp"
-#include "../sort/include/heap_sort.hpp"
-#include "../sort/include/bucket_sort.hpp"
-#include "../sort/include/radix_sort.hpp"
-#include "../sort/include/counting_sort.hpp"
+#include "file_sort.hpp"
+#include "file_sort_v2.hpp"
+#include "shell_sort.hpp"
+#include "quick_sort_optimized.hpp"
+#include "heap_sort.hpp"
+#include "bucket_sort.hpp"
+#include "radix_sort.hpp"
+#include "counting_sort.hpp"
 #include <map>
 #include <tabulate/table.hpp>
 #include <tabulate/markdown_exporter.hpp>
 
+template<typename T>
 tabulate::Table generate_table(
 	const std::string &input_file,
-	const std::map<std::string, FileSort *> &sort_list_with_clause,
+	const std::map<std::string, FileSort<T> *> &sort_list_with_clause,
 	const std::map<std::string, size_t> &tests) {
 
   tabulate::Table sort_results;
@@ -43,33 +45,42 @@ tabulate::Table generate_table(
 
 int main() {
 
-  	//Utils::generate_file(FILE_OUTPUT, '\n',10000000);
-/*
+  std::ifstream ofstream;
+  ofstream.open(SOURCE_FILE);
+  //2s 158.9ms
+  if (!ofstream.is_open())
+	Utils::generate_file("/home/yacopsae/CLionProjects/algo-homework/file/generated_numbers.txt", '\n', 100000);
+  ofstream.close();
 
-  FileSort file_sort{new ShellSort(), sort_result};
-  //file_sort.file_sort(FILE_OUTPUT, 100);
-*/
+  //std::map<std::string, size_t> tests;
+  //tests["32"] = 32;
+  //tests["64"] = 64;
+  //tests["128"] = 128;
+  //tests["256"] = 256;
+  //tests["512"] = 512;
+  //tests["1024"] = 1024;
+  //tests["16384"] = 16384;
+  //tests["32768"] = 32768;
+  //tests["65536"] = 65536;
+  //tests["131072"] = 131072;
+  //tests["262144"] = 262144;
 
-  std::map<std::string, size_t> tests;
-  tests["32"] = 32;
-  tests["64"] = 64;
-  tests["128"] = 128;
-  tests["256"] = 256;
-  tests["512"] = 512;
-  tests["1024"] = 1024;
+  //std::string sort_result(SORT_RESULT);
+  //std::map<std::string, FileSort<long> *> exponent;
+  //exponent["ShellSort"] = new FileSort<long>{new ShellSort<long>(), sort_result};
+  //exponent["OptimizedQuickSort"] = new FileSort<long>{new OptimizedQuickSort<long>(), sort_result};
+  //exponent["HeapSort"] = new FileSort<long>{new HeapSort<long>(), sort_result};
+  //exponent["BucketSort"] = new FileSort<long>{new BucketSort<long>(), sort_result};
+  //exponent["CountingSort"] = new FileSort<long>{new CountingSort<long>(), sort_result};
+  //exponent["RadixSort"] = new FileSort<long>{new RadixSort<long>(), sort_result};
 
-  std::string sort_result(SORT_RESULT);
-  std::map<std::string, FileSort *> exponent;
-  exponent["ShellSort"] = new FileSort{new ShellSort(), sort_result};
-  exponent["OptimizedQuickSort"] = new FileSort{new OptimizedQuickSort(), sort_result};
-  exponent["HeapSort"] = new FileSort{new HeapSort(), sort_result};
-  //exponent["BucketSort"] = new FileSort{new BucketSort(), sort_result};
-  //exponent["CountingSort"] = new FileSort{new CountingSort(), sort_result};
-  exponent["RadixSort"] = new FileSort{new RadixSort(), sort_result};
+  auto * merge_file_sort = new MergeFileSort(SORT_RESULT);
+  std::cout << Utils::test_file_sorting_for_table(SOURCE_FILE, merge_file_sort);
 
-  tabulate::MarkdownExporter exporter;
-  std::cout << "Sorting 10000000 numbers file" << std::endl;
-  auto exponent_table = generate_table(FILE_OUTPUT, exponent, tests);
-  std::cout << exporter.dump(exponent_table) << std::endl;
+
+  //tabulate::MarkdownExporter exporter;
+  //std::cout << "Sorting 10000 numbers file" << std::endl;
+  //auto exponent_table = generate_table(FILE_INPUT, exponent, tests);
+  //std::cout << std::endl << std::endl << std::endl << exporter.dump(exponent_table) << std::endl;
 
 }

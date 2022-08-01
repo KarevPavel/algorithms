@@ -8,5 +8,5 @@ add_executable(${PROJECT_NAME} main.cpp)
 configure_file(include/file_path_config.hpp.in ${CMAKE_BINARY_DIR}/generated/file_path_config.hpp)
 include_directories(${CMAKE_BINARY_DIR}/generated/)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC utils tabulate)
+target_link_libraries(${PROJECT_NAME} PUBLIC utils sort tabulate)
 target_include_directories(${PROJECT_NAME} PRIVATE include)

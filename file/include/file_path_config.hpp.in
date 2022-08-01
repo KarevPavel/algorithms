@@ -2,5 +2,5 @@
 // Created by yacopsae on 10/03/22.
 //
 #pragma once
-#define FILE_OUTPUT "@FILE_PATH_CONFIG@"
+#define SOURCE_FILE "@FILE_PATH_CONFIG@"
 #define SORT_RESULT "@SORT_RESULT_DIR@"

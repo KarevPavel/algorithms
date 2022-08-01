@@ -35,14 +35,13 @@ class AvlTree : public Tree<T> {
 	AvlNode *_right;
   };
 
+  AvlNode *find_node(AvlNode *, T x);
   AvlNode *root;
 
  private:
   void insert(AvlNode *node, T x);
   bool small_left_rotation(AvlNode *, AvlNode *);
   bool small_right_rotation(AvlNode *, AvlNode *);
-  void big_left_rotation(AvlNode *, AvlNode *);
-  void big_right_rotation(AvlNode *, AvlNode *);
   void rebalance(AvlNode *, AvlNode *);
   int calc_height(AvlNode *node);
 
@@ -76,17 +75,36 @@ void AvlTree<T>::insert(T x) {
 
 template<typename T>
 bool AvlTree<T>::search(T x) {
-  return false;
+  return find_node(root, x);
+}
+
+template<typename T>
+typename AvlTree<T>::AvlNode * AvlTree<T>::find_node(AvlNode *node, T x) {
+  if (node == nullptr)
+	return nullptr;
+
+  if (node->value() == x)
+	return node;
+
+  if (node->value() > x) {
+	return find_node(node->left(), x);
+  } else if (node->value() < x)
+	return find_node(node->right(), x);
+
+  return nullptr;
 }
 
 template<typename T>
 void AvlTree<T>::remove(T x) {
-
+  //not implemented
 }
 
 template<typename T>
 bool AvlTree<T>::small_left_rotation(AvlNode *parent_node, AvlNode *node) {
   auto *right = node->right();
+  if (right == nullptr)
+	return false;
+
   auto *right_left = right->left();
   auto *right_right = right->right();
 
@@ -128,16 +146,6 @@ bool AvlTree<T>::small_right_rotation(AvlNode *parent_node, AvlNode *node) {
   }
 
   return true;
-}
-
-template<typename T>
-void AvlTree<T>::big_left_rotation(AvlNode *, AvlNode *) {
-
-}
-
-template<typename T>
-void AvlTree<T>::big_right_rotation(AvlNode *, AvlNode *) {
-
 }
 
 template<typename T>

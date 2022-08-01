@@ -21,7 +21,7 @@ if __name__ == '__main__':
     f.write('FILE_NAME|DECOMPRESSED|COMPRESSED|\n')
     f.write('| --- |--- |--- |\n')
 
-    path = '/home/yacopsae/CLionProjects/algo-homework/compression/test'
+    path = '/home/yacopsae/CLionProjects/algo-homework/compression/test_resources'
     bin_path = '/home/yacopsae/CLionProjects/algo-homework/compression/rle/bin/rle'
     for _, _, files in os.walk(path):
         for file in files:

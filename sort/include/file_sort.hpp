@@ -49,7 +49,7 @@ FileSort<T>::~FileSort() {
  *
  * @param ifstream Стрим неотсоритованного файла с числами
  * @param batch_size Максимальный размер "пачки" (файл разделится на пачки batch_size/2,
- * Для того, что бы при слиянии файлов не превысить размер этот размер
+ * Для того, что бы при слиянии файлов не превысить этот размер
  * @return Возвращает количество созданных файлов
  */
 template <typename T>
@@ -72,7 +72,8 @@ int FileSort<T>::split_file(const std::string &file_path, int batch_size) {
 	bool no_element = !(ifstream >> number);
 	if (!no_element)
 	  numbers[index++] = number;
-	if (index > length - 1 || (no_element && index > 0)) {
+
+	if (index > length || (no_element && index > 0)) {
 	  this->_sort->sort(numbers, index);
 	  std::string file = sort_result_path + std::to_string(file_name_counter++);
 	  ofstream.open(file);
@@ -87,7 +88,7 @@ int FileSort<T>::split_file(const std::string &file_path, int batch_size) {
 	  ofstream.flush();
 	  ofstream.close();
 	  index = 0;
-	  delete[] numbers;
+	  //delete[] numbers;
 	  numbers = new long[length]{NULL};
 	}
 	if (no_element) {
@@ -172,8 +173,6 @@ void FileSort<T>::file_sort(std::string in_file_path,
 	  delete merge_result;
 	  Utils::overwrite_file(a_file, first_part, m);
 	  Utils::overwrite_file(b_file, second_part, m);
-	  delete first_part;
-	  delete second_part;
 	}
 	sorted_file_name++;
   }

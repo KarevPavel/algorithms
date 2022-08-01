@@ -12,7 +12,6 @@ class Tree {
   virtual void remove(T x) = 0;
 
   struct Node {
-   public:
 	virtual T &value() = 0;
 	virtual Node *left() = 0;
 	virtual Node *right() = 0;
