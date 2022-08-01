@@ -10,7 +10,6 @@
 
 #External Sort (2 Files)
 |  Numbers      |  External Sort  |
-| :----         |                 |
+| :----         |   :----         |
 |  1000         |  1s 23.3ms      |
 |  10000        | 1m 37s 453.7ms  |
-|  100000       | 1m 37s 453.7ms  |
