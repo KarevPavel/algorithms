@@ -28,8 +28,7 @@
 | 1000000  | 584.388110  | 7418.429855 ????  | 581.601589  |
 | 10000000 | 6641.899864 | 1232.643535  | 5687.606981 |
 
-
-##10 000 numbers (T files)
+## 10 000 numbers (T files)
 | batch_size | BucketSort  | CountingSort | HeapSort    | OptimizedQuickSort | RadixSort   | ShellSort  |
 | :----      | :----       | :----        | :----       | :----              | :----       | :----      |
 | 32         | 19s 35.16ms | 19s 339.3ms  | 19s 36.24ms | 19s 150.6ms        | 19s 139.9ms | 19s 205ms  |
@@ -39,7 +38,7 @@
 | 512        | 612.7ms     | 620.1ms      | 633.9ms     | 611.2ms            | 592ms       | 600.3ms    |
 | 1024       | 311.9ms     | 310.8ms      | 306.6ms     | 315.6ms            | 301.7ms     | 312.1ms    |
 
-##External Sort (2 Files)
+## External Sort (2 Files)
 |  Numbers      |  External Sort  |
 | :----         |   :----         |
 |  1000         |  1s 23.3ms      |
