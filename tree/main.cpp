@@ -79,13 +79,13 @@ int main() {
   std::cout << "## RANDOM ARRAY" << std::endl;
   std::cout << exporter.dump(bs_tree_random_array) << std::endl;
 
-  std::cout << "RandomTree" << std::endl;
+  std::cout << std::endl << std::endl << "RandomTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
   std::cout << exporter.dump(random_tree_asc_array) << std::endl << std::endl;
   //std::cout << "## RANDOM ARRAY" << std::endl;
   //std::cout << exporter.dump(random_tree_random_array) << std::endl;
 
-  std::cout << "AVLTree" << std::endl;
+  std::cout << std::endl << std::endl<< "AVLTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
   std::cout << exporter.dump(avl_tree_asc_array) << std::endl << std::endl;
   std::cout << "## RANDOM ARRAY" << std::endl;
