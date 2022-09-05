@@ -299,7 +299,7 @@ template<typename T>
 T *Utils::random_array(T element_count) {
   auto array = new T[element_count];
   for (int i = 0; i < element_count; i++)
-	array[i] = random_number<T>(0, std::numeric_limits<int>::max());
+	array[i] = random_number<T>(0, element_count);
   return array;
 }
 

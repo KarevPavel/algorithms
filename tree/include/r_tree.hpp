@@ -34,6 +34,8 @@ class RandomTree : public Tree<T> {
 	  root = new RTreeNode<T>(element);
 	  return;
 	}
+	if (search(element))
+	  return;
 	auto *n = new RTreeNode<T>(element);
 	insert(root, n);
 	if ((pseudo_random()) % 2 == 0) {
@@ -55,33 +57,85 @@ class RandomTree : public Tree<T> {
 	  node->left = new_node;
 	  new_node->parent = node;
 	}
-	if (new_node->parent == nullptr)
-	  std::cout << "DADAD" << std::endl;
 	return new_node;
   }
 
   void move2Root(RTreeNode<T> *node) {
 	while (root != node) {
+	  auto parent = node->parent;
+	  if (parent->parent == nullptr) {
+	    if (node->value < parent->value) {
+	      if (node->right != nullptr)
+		  	insert(node->right, parent);
+	      else
+	        node->right = parent;
+		} else {
+	      if (node->left != nullptr)
+		  	insert(node->left, parent);
+	      else
+	        node->left = parent;
+		}
+
+	    if (parent->right == node)
+	      parent->right = nullptr;
+	    if (parent->left == node)
+	      parent->left = nullptr;
+
+		parent->parent = node;
+		root = node;
+		node->parent = nullptr;
+		break;
+	  }
+
 	  if (node->parent->left == node) {
 		right_rotation(node->parent, node);
 	  }
-	  if (node->parent->right == node) {
+	  else if (node->parent->right == node) {
 		left_rotation(node->parent, node);
 	  }
 	}
   }
 
   void right_rotation(RTreeNode<T> *parent, RTreeNode<T> *node) {
-    auto * node_right = node->right;
-    parent->left = node_right;
-    auto pp = parent->parent;
-    node->parent = pp;
-    parent->parent = node;
-    node->right = parent;
+	auto pp = parent->parent;
+	if (node->right == nullptr) {
+	  node->right = parent;
+	  parent->parent = node;
+	} else {
+	  parent->left = nullptr;
+	  parent->parent = nullptr;
+	  insert(node->right, parent);
+	}
+
+	if (pp->left == parent) {
+	  pp->left = node;
+	} else
+	  pp->right = node;
+
+	node->parent = pp;
+	parent->left = nullptr;
+	parent->parent = node;
   }
 
   void left_rotation(RTreeNode<T> *parent, RTreeNode<T> *node) {
+    auto pp = parent->parent;
+    if (node->left == nullptr) {
+	  node->left = parent;
+	  parent->parent = node;
+	} else {
+      parent->right = nullptr;
+      parent->parent = nullptr;
+	  insert(node->left, parent);
+	}
 
+    if (pp->left == parent) {
+      pp->left = node;
+    } else
+      pp->right = node;
+
+	node->parent = pp;
+	parent->right = nullptr;
+	parent->parent = node;
   }
 
   RTreeNode<T> *find_node(RTreeNode<T> *node, T x) {
@@ -100,7 +154,7 @@ class RandomTree : public Tree<T> {
   }
 
   bool search(T element) override {
-
+	return find_node(root, element)!= nullptr;
   }
 
   void remove(T element) override {

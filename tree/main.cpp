@@ -16,16 +16,23 @@ tabulate::Table generate_table(Tree<int> *tree,
 							   const std::function<int *(int)> &array_generator,
 							   const std::function<std::string(int *, int, Tree<int> *)> &func);
 
+int main2() {
+  auto *r_tree = new RandomTree<int>();
+
+  for (int i = 0; i < 100; i++) {
+    r_tree->insert(i);
+  }
+
+}
+
 int main() {
 
   std::map<std::string, size_t> tests;
   tests["100"] = 100;
-//tests["1000"] = 1000;
-/*  tests["10000"] = 10000;
-  tests["100000"] = 100000;*/
+  tests["1000"] = 1000;
+  tests["10000"] = 10000;
+  tests["100000"] = 100000;
 
-  std::map<std::string, Tree<int> *> random_array_tree_map;
-  random_array_tree_map["BSTree"] = new BSTree<int>();
   auto *bs_tree = new BSTree<int>();
   auto *avl_tree = new AvlTree<int>();
   auto *r_tree = new RandomTree<int>();
@@ -40,10 +47,12 @@ int main() {
 										Utils::asc_array<int>,
 										Utils::test_tree_insert_asc_array<Tree<int>>);
 
+/*
   auto random_tree_random_array = generate_table(r_tree,
 											  tests,
 											  Utils::random_array<int>,
 											  Utils::test_tree_insert_random_array<Tree<int>>);
+*/
 
   auto random_tree_asc_array = generate_table(r_tree,
 										   tests,
@@ -61,7 +70,9 @@ int main() {
 										Utils::asc_array<int>,
 										Utils::test_tree_insert_asc_array<Tree<int>>);
 
+
   tabulate::MarkdownExporter exporter;
+
   std::cout << "BSTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
   std::cout << exporter.dump(bs_tree_asc_array) << std::endl << std::endl;
@@ -71,8 +82,8 @@ int main() {
   std::cout << "RandomTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
   std::cout << exporter.dump(random_tree_asc_array) << std::endl << std::endl;
-  std::cout << "## RANDOM ARRAY" << std::endl;
-  std::cout << exporter.dump(random_tree_random_array) << std::endl;
+  //std::cout << "## RANDOM ARRAY" << std::endl;
+  //std::cout << exporter.dump(random_tree_random_array) << std::endl;
 
   std::cout << "AVLTree" << std::endl;
   std::cout << "## ASC ARRAY" << std::endl;
@@ -98,16 +109,16 @@ tabulate::Table generate_table(Tree<int> *tree,
 	header_rows.push_back(headers[i]);
   sort_results.add_row(header_rows);
 
+  int test_number = 1;
   for (auto const &test_entry: tests) {
 	tabulate::Table::Row_t result_rows;
-
 	int element_count = test_entry.second;
 	int *array = array_generator(element_count);
 	test_entry.first.begin();
 	result_rows.push_back(test_entry.first);
 	result_rows.push_back(func(array, element_count, tree));
 	result_rows.push_back(Utils::test_tree_search(array, element_count, tree));
-	result_rows.push_back(Utils::test_tree_delete(array, element_count, tree));
+	//result_rows.push_back(Utils::test_tree_delete(array, element_count, tree));
 	sort_results.add_row(result_rows);
   }
   return sort_results;

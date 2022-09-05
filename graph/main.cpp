@@ -53,7 +53,7 @@ int main() {
 
 
   //matrix_3.png
-  /*
+
   auto *matrix3 = new int *[8]{
 	  new int[8]{0, 3, 5, 0, 0, 0, 0, 0,},
 	  new int[8]{3, 0, 6, 4, 10, 0, 0, 2,},
@@ -70,7 +70,7 @@ int main() {
   auto t = kraskal.skeleton();
   for (int i = 0; i< t.size(); i++)
 	std::cout << "Edge " << t.get(i)->v1 << " - " << t.get(i)->v2 << std::endl;
-  */
+
 
   //matrix_4.png
   auto *matrix4 = new int *[7]{
